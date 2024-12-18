@@ -9,4 +9,6 @@ Parcourir un maximum de pages web afin de les stocker dans [database.json](datab
 
 Permet de parcourir une page web et d'en trouver des élément.
 
-#### [Crawler](Crawler (2).py)
+#### [Crawler](https://github.com/nathan-004/Crawler_Python/blob/main/Crawler%20(2).py)
+
+Utilise [web.py](web.py) pour modifier [database.json](database.json).
