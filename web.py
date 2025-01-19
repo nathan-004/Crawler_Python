@@ -132,4 +132,15 @@ class WEB_SCRAPPING():
         """
 
         # Define the lists of important balises : title, strong, ...
-
+balises = {
+    "h1": 10,  # Titre principal, très important
+    "h2": 9,   # Sous-titre principal
+    "h3": 8,   # Niveau inférieur de titre
+    "strong": 7,  # Texte fortement accentué
+    "b": 6,       # Texte en gras
+    "em": 6,      # Texte mis en emphase
+    "mark": 5,    # Texte surligné
+    "u": 4,       # Texte souligné
+    "i": 3,       # Texte en italique
+    "small": 2    # Texte en plus petit
+}
