@@ -1,217 +1,188 @@
-﻿from web import WEB_SCRAPPING
-import random
-import json
+import requests
 
-class Crawler():
+class WEB_SCRAPPING():
 
     def __init__(self, url):
         self.url = url
-        self.web = WEB_SCRAPPING(url)
-        self.queue = Queue()
-        self.database = DATABASE("database.json", True) # Database containing all the urls
-        self.visited = self.database.get_JSON()
+        self.elements = self.ELEMENTS()
+        self.response = requests.get(url)
+        if self.response.status_code == 200:
+            print('Web site exists')
+        else:
+            print('Web site does not exist')
 
-        # Database architecture
-        # "url_example" : {"pointers": 0, "contents": {"champignon": Score donné pour un sujet dépendant du type de balise utilisée}}
-
-    def launch(self, iterations, url=None):
+    def ELEMENTS(self, url=None):
         """
-        Launch the bot on the given url
+        Return a list of all the elements in the page
 
         Inputs
-        ------
-        url:str
-            url of the first website
-        iterations:int
-            number of times the bot will run
-
-        Returns
         -------
-        None
-
-        1. Look at the page
-        2. Get the links
-        3. Put them in a queue file
-        4. Take a link in the queue
-        5. Repeat
-        """
-
-        done = []
-
-        if url is None:
-            url = self.url
-
-        for i in range(iterations):
-            while url in done:
-                url = self.queue.get()
-            urls = self.get_links(url)
-
-            for a in urls:
-                if a in self.visited:
-                    self.visited[a]["pointers"] += 1
-                else:
-                    self.visited[a] = {"pointers" : 1, "contents": {}}
-
-                if not self.queue.is_element(a) and not (a in done):
-                    self.queue.add(a)
-
-            print(i, len(done), len(urls), "liens", "|", url, sep=" ")
-
-            if url in self.visited:
-                pass
-            else:
-                self.visited[url] = {"pointeurs": 1, "contents": {}}
-
-            done.append(url)
-            url = self.queue.get()
-
-        self.database.add_JSON(self.visited)
-
-    def get_links(self, url=None):
-        """
-        Given an url, return a list of all the url in the page
-
-        Inputs
-        ------
         url:str
-            url of the website
+            Url of the page
 
         Returns
         -------
         list
-            list of all the url in the page
+            All the elements in the page
+
+        1. Get the html code of the page
+        2. For every character :
+            3. Find its type of element (<a>)
+            4. Find its arguments (<a url="">)
+            5. Find its content (<a>test</a>)
         """
 
-        if url is None:
-            url = self.url
+        html_text = requests.get(self.url).text # Get the html code of the page
 
-        self.web.elements = self.web.ELEMENTS(url)
-        links = self.web.find("a")
-        urls = []
+        # Init varialbes
+        current = html_text[0]
+        end = False
+        start = False
+        arguments = ""
+        elements = []
 
-        for el in links:
-            for arg in el["arg"]:
-                if arg[:4] == "href":
-                    a = arg[6:-1]
-                    if a[:8] != "https://":
-                        a = url + a
-                    if a in self.visited:
-                        continue
-                    urls.append(a)
+        for char in html_text:
+            # Check if it's the type of the element
 
-        return urls
+            if current[-1] == "<" and char != "/": # It"s the start of an element
+                start = True
+            elif start and char == ">": # It"s the end of an opened element -> current is the arguments
+                start = False
+                arguments = current
+                current = ""
+            elif char == "/" and current[-1] == "<": # Check if it"s the start of the end
+                end = True
+            elif end and char == ">": # It's the end of the end
+                res = self.get_arguments(arguments, current)
+                elements.append({"type": res[0],"arg": res[1], "content": res[2]})
+                current = ""
+            current += char
 
+        return elements
 
-class Queue():
-
-    def __init__(self, queue = []):
-        self.queue = queue
-        self.save_url = "https://jeunes.nouvelle-aquitaine.fr/formation/au-lycee/lycee-connecte"
-
-    def is_element(self, element):
+    def get_arguments(self, arguments, current):
         """
-        Return True if the element is in the queue else False
+        Return the type of element, its arguments and its content
 
         Inputs
         ------
-        element
-            Element to look at
+        arguments:str
+            start of the element -> " <a class=gb1 href="https://mail.google.com/mail/?tab=wm"
+        current:str
+            content of the element -> ">Gmail</a"
 
         Returns
         -------
-        bool
-            True if element else False
+        tuple
+            (element:str, arguments:list, content:str)
         """
 
-        for el in self.queue:
-            if el == element:
-                return True
-            else:
-                return False
+        type_ = ""
+        content = ""
+        start = False
+        end = False
 
-    def add(self, element):
+        # Get the type of element
+        for index, char in enumerate(arguments):
+            if char == "<" and not start: # The start of the html element
+                start = True
+                continue
+
+            if start and not end:
+                if char == " ":
+                    end = True
+                    continue
+                type_ += char
+
+            if end:
+                break
+
+        argument = arguments[index:].split(" ")[1:]
+
+        content = current.split("<")[0][1:]
+
+        return (type_, argument, content)
+
+    def find(self, type_):
         """
-        Add an element to the queue
-        """
+        Returns a list of all the elements `type_` in the page
 
-        self.queue.append(element)
-
-    def get(self, index=0):
-        """
-        Get and delete an element of the queue
-        """
-        try:
-            return self.queue.pop(index)
-        except IndexError:
-            return self.save_url
-
-
-class DATABASE():
-
-    def __init__(self, file, empty=False):
-        """
         Inputs
         ------
-        file:str
-            name of the file
-        empty:bool
-            if true : resets the file
+        type:str
+            The type of elements to find
+
+        Returns
+        -------
+        list
+            All the element in the page
         """
 
-        self.file = file
+        found = []
 
-        if empty:
-            with open(file, 'w') as json_file:
-                json.dump(dict(), json_file)
+        for el in self.elements:
+            if el["type"] == type_:
+                found.append(el)
 
+        return found
 
-    def get_JSON(self, file=None):
+    def get_contents(self, url=None):
         """
-        Returns the values in a JSON file
+        Return a dict of all the contents in the page : for example - "test" and a score
 
         Returns
         -------
         dict
-            Values in the JSON file
+            {"keyword" : score}
+        """
+        pass
+
+
+# Define the lists of important balises : title, strong, ...
+balises = {
+    "h1": 10,  # Titre principal, très important
+    "h2": 9,   # Sous-titre principal
+    "h3": 8,   # Niveau inférieur de titre
+    "strong": 7,  # Texte fortement accentué
+    "b": 6,       # Texte en gras
+    "em": 6,      # Texte mis en emphase
+    "mark": 5,    # Texte surligné
+    "u": 4,       # Texte souligné
+    "i": 3,       # Texte en italique
+    "small": 2    # Texte en plus petit
+}
+
+class WebScrapping():
+
+    def __init__(self, url):
+        self.url = url
+        self.ELEMENTS()
+
+    def ELEMENTS(self):
+        """
+        Return a list of all the elements in the page
+
+        Returns
+        -------
+        list
+            List of all the elements in the page {"element", "content", "attributes"}
         """
 
-        if file is None:
-            file = self.file
+        html_text = requests.get(self.url).text
 
-        with open(file, "r") as file:
-            data = json.load(file)
+        self.elements = self.find_html(html_text)
 
-        return data
-
-    def add_JSON(self, values, file=None):
+    def find_html(self, code_html):
         """
-        Add content to a JSON file
+        Return all the elements in a html code
 
-        Inputs
-        ------
-        value:dict
-            dict of values
-        file:str
-            name of the file
+        Parameters
+        ----------
+        code_html:string
+            html, element à etudier
         """
 
-        if file is None:
-            file = self.file
-
-        res = self.get_JSON()
-
-        with open(file, 'w') as json_file:
-            # json.dump(dict(list(res.items()) + list(values.items())), json_file)
-            json.dump(values, json_file, indent = 4)
 
 
-
-
-bot = Crawler("https://www.youtube.com/")
-bot.launch(200)
-print(bot.visited)
-
-"""
-test -> https://www.google.com/
-        https://jeunes.nouvelle-aquitaine.fr/formation/au-lycee/lycee-connecte
-"""
+if __name__ == "__main__":
+    web = WebScrapping("https://jeunes.nouvelle-aquitaine.fr")
