@@ -173,6 +173,30 @@ class WebScrapping():
             if element[0] == balise_name:
                 balises.append(element)
         return balises
+    
+    def urljoin(self, url_base, url:str):
+        """
+        Parametres
+        ---------
+        url_base:str
+            URL de la page courante
+        url:str
+            URL à joindre à l'URL de la page courante
+
+        Retourne
+        -------
+        str
+            URL jointe
+        """
+        if url.startswith("http"):
+            return url
+        elif url.startswith("../"):
+            url_base = url_base.split("/")
+            url_base = url_base[:-1]
+            url_base = "/".join(url_base)
+            return url_base + url[2:]
+        else:
+            return url_base + url
 
 class Stack():
     def __init__(self):
@@ -200,7 +224,11 @@ class Stack():
 if __name__ == "__main__":
     a = WebScrapping(url="https://webscraper.io/test-sites")
 
-    print(a.find_balise("a"))
+    # print(a.find_balise("a"))
+
+    print(a.urljoin("https://webscraper.io/test-sites", "test-sites"))
+    print(a.urljoin("https://webscraper.io/test-sites", "../test-sites"))
+    print(a.urljoin("https://webscraper.io/test-sites", "https://test-sites/test-sites"))
 
 
 # https://webscraper.io/test-sites
