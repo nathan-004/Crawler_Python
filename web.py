@@ -251,6 +251,24 @@ class Stack():
 
     def is_empty(self):
         return len(self.stack) == 0
+    
+    def stack_to_string(self):
+        """
+        Retourne la pile sous forme de chaîne de caractères
+        """
+        return "\n".join([str(i) for i in self.stack])
+    
+    def string_to_stack(self, string):
+        """
+        Remplit la pile à partir d'une chaîne de caractères
+        """
+        self.stack = []
+        for i in string.split("\n"):
+            if i != "":
+                try:
+                    self.push(eval(i))
+                except SyntaxError:
+                    self.push(i)
 
 if __name__ == "__main__":
     a = WebScrapping(url="https://webscraper.io/test-sites")
