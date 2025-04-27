@@ -4,6 +4,10 @@ class WebScrapping():
     def __init__(self, url=""):
         self.url = url
         self.elements = self.get_html_elements()
+        self.file_exceptions = [
+            "zip",
+            "pdf",
+        ]
 
     def get_html_elements(self, url=None, html_text=None):
         """
@@ -69,7 +73,11 @@ class WebScrapping():
 
             elif state == "inside_close":
                 if char == ">":
-                    elements.append((*self.get_arguments(stack.last_balise(current_end)), current_content))
+                    try:
+                        elements.append((*self.get_arguments(stack.last_balise(current_end)), current_content))
+                    except TypeError as e:
+                        print(f"Error: {e}, Current character : {idx}, Current page : {url}, Stack: {stack.stack}")
+                        pass
                     state = "outside"
                     current_start = ""
                     current_content = ""
@@ -195,8 +203,31 @@ class WebScrapping():
             url_base = url_base[:-1]
             url_base = "/".join(url_base)
             return url_base + url[2:]
-        else:
+        elif url.startswith("/"):
+            url_base = url_base.split("//")
+            domain = url_base[1].split("/")[0]
+            url_base = url_base[0] + "//" + domain
             return url_base + url
+        else:
+            sep = "/" if url_base[-1] != "/" and url[0] != "/" else ""
+            return url_base + sep + url
+        
+    def is_valid_url(self, url:str):
+        """
+        Parametres
+        ---------
+        url:str
+            URL à vérifier
+
+        Retourne
+        -------
+        bool
+            True si l'URL est valide, False sinon
+        """
+        if requests.get(url).status_code == 200:
+            return True
+        else:
+            return False
 
 class Stack():
     def __init__(self):
@@ -226,7 +257,7 @@ if __name__ == "__main__":
 
     # print(a.find_balise("a"))
 
-    print(a.urljoin("https://webscraper.io/test-sites", "test-sites"))
+    print(a.urljoin("https://webscraper.io/test-sites/test2", "/test-sites3"))
     print(a.urljoin("https://webscraper.io/test-sites", "../test-sites"))
     print(a.urljoin("https://webscraper.io/test-sites", "https://test-sites/test-sites"))
 
