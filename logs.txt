@@ -1,0 +1,8 @@
+2025-04-28T11:49:11Z - Début du scraping, url de départ : https://webscraper.io/test-sites
+2025-04-28T11:49:12Z - Visiting : https://webscraper.io/test-sites
+2025-04-28T11:49:34Z - Visiting : https://webscraper.io/
+2025-04-28T11:50:04Z - Visiting : https://webscraper.io/cloud-scraper
+2025-04-28T11:50:49Z - Visiting : https://webscraper.io/pricing
+2025-04-28T11:51:40Z - Visiting : https://webscraper.io/documentation
+2025-04-28T11:52:43Z - Visiting : https://webscraper.io/tutorials
+2025-04-28T11:53:08Z - Sauvegarde des données ...

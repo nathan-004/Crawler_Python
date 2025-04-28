@@ -61,6 +61,7 @@ class Crawler():
             url = self.stack.pop(0)  # Utiliser self.stack
             print("Visiting:", url)
             if url not in visited:
+                logs.append(f"Visiting : {url}", timestamp=True)
                 visited.add(url)
                 self.web.url = url
                 self.web.elements = self.web.get_html_elements()
@@ -91,10 +92,13 @@ class Crawler():
                     valid_urls.append(new_url)
             
                 # Ajouter les données à sauvegarder
-                self.json_stockage.data_append(url, valid_urls, self.web.elements)
+                self.json_stockage.data_append(url, valid_urls)
 
 if __name__ == "__main__":
     start_url = "https://webscraper.io/test-sites"
+    logs = TXTStockage("logs.txt")
+    logs.append(f"Début du scraping, url de départ : {start_url}", timestamp=True)
+
     crawler = Crawler(start_url)
     try:
         crawler.crawl_bfs()
@@ -104,6 +108,7 @@ if __name__ == "__main__":
         text_stockage.save(crawler.stack.stack_to_string())
         print("Sauvegarde des données dans le fichier urls.json")
         crawler.json_stockage.save_stock()
+        logs.append("Sauvegarde des données ...", timestamp=True)
 
 
 # https://webscraper.io/test-sites

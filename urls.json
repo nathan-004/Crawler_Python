@@ -37,1220 +37,202 @@
             "https://youtube.com/@WebScraper/videos",
             "https://chromewebstore.google.com/detail/web-scraper-free-web-scra/jnhgnonknehpejjnehehllkliplmbmhn?hlen"
         ],
-        "timestamp": "2025-04-27T20:11:12Z",
-        "elements": [
-            [
-                [
-                    "comment",
-                    ""
-                ],
-                "!DOCTYPE html"
-            ],
-            [
-                [
-                    "comment",
-                    ""
-                ],
-                "!-- Google Tag Manager --"
-            ],
-            [
-                "script",
-                {
-                    "nonce": "1XOgrExioeCmHKfVJA5GBidH0DhNxqO2"
-                },
-                "(function (w, d, s, l, i) {\t\tw[l] = w[l] || [];\t\tw[l].push({\t\t\t'gtm.start':\t\t\t\tnew Date().getTime(), event: 'gtm.js'\t\t});\t\tvar f = d.getElementsByTagName(s)[0],\t\t\tj = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : '';\t\tj.async = true;\t\tj.src =\t\t\t'https://www.googletagmanager.com/gtm.js?id=' + i + dl;\t\tf.parentNode.insertBefore(j, f);\t})(window, document, 'script', 'dataLayer', 'GTM-NVFPDWB');"
-            ],
-            [
-                [
-                    "comment",
-                    ""
-                ],
-                "!-- End Google Tag Manager --"
-            ],
-            [
-                "title",
-                {},
-                "Test Sites | Web Scraper"
-            ],
-            [
-                "script",
-                {
-                    "defersrc": "/js/app.js?idf88661e62a749cf120d4ba48083b5536"
-                },
-                ""
-            ],
-            [
-                "head",
-                {},
-                ""
-            ],
-            [
-                [
-                    "comment",
-                    ""
-                ],
-                "!-- Google Tag Manager (noscript) --"
-            ],
-            [
-                "iframe",
-                {
-                    "src": "https://www.googletagmanager.com/ns.html?idGTM-NVFPDWB",
-                    "height": "0",
-                    "width": "0",
-                    "style": "display:none;visibility:hidden"
-                },
-                ""
-            ],
-            [
-                "noscript",
-                {},
-                ""
-            ],
-            [
-                [
-                    "comment",
-                    ""
-                ],
-                "!-- End Google Tag Manager (noscript) --"
-            ],
-            [
-                "span",
-                {
-                    "class": "visually-hidden"
-                },
-                "Toggle navigation"
-            ],
-            [
-                "span",
-                {
-                    "class": "icon-bartop-bar"
-                },
-                ""
-            ],
-            [
-                "span",
-                {
-                    "class": "icon-barmiddle-bar"
-                },
-                ""
-            ],
-            [
-                "span",
-                {
-                    "class": "icon-barbottom-bar"
-                },
-                ""
-            ],
-            [
-                "span",
-                {
-                    "class": "icon-barextra-bottom-bar"
-                },
-                ""
-            ],
-            [
-                "button",
-                {
-                    "type": "button",
-                    "class": "navbar-togglerfloat-endcollapsed",
-                    "data-bs-toggle": "collapse",
-                    "data-bs-target": "#navbar",
-                    "data-bs-target-2": ".side-collapse-container",
-                    "data-bs-target-3": ".side-collapse",
-                    "aria-expanded": "false",
-                    "aria-controls": "navbar"
-                },
-                ""
-            ],
-            [
-                "a",
-                {
-                    "data-bs-toggle": "collapse-side",
-                    "data-bs-target": ".side-collapse",
-                    "data-bs-target-2": ".side-collapse-container"
-                },
-                ""
-            ],
-            [
-                "a",
-                {
-                    "href": "/"
-                },
-                ""
-            ],
-            [
-                "div",
-                {
-                    "class": "navbar-brand"
-                },
-                ""
-            ],
-            [
-                "div",
-                {
-                    "class": "navbar-header"
-                },
-                ""
-            ],
-            [
-                "p",
-                {},
-                "Web Scraper"
-            ],
-            [
-                "div",
-                {
-                    "class": "crta"
-                },
-                ""
-            ],
-            [
-                "a",
-                {
-                    "href": "/",
-                    "class": "nav-linkmenuitm"
-                },
-                ""
-            ],
-            [
-                "li",
-                {
-                    "class": "nav-item"
-                },
-                ""
-            ],
-            [
-                "p",
-                {},
-                "Cloud Scraper"
-            ],
-            [
-                "div",
-                {
-                    "class": "crta"
-                },
-                ""
-            ],
-            [
-                "a",
-                {
-                    "href": "/cloud-scraper",
-                    "class": "nav-linkmenuitm",
-                    "id": "cloud-nav-link"
-                },
-                ""
-            ],
-            [
-                "li",
-                {
-                    "class": "nav-item"
-                },
-                ""
-            ],
-            [
-                "p",
-                {},
-                "Pricing"
-            ],
-            [
-                "div",
-                {
-                    "class": "crta"
-                },
-                ""
-            ],
-            [
-                "a",
-                {
-                    "href": "/pricing",
-                    "class": "nav-linkmenuitm",
-                    "id": "pricing-nav-link"
-                },
-                ""
-            ],
-            [
-                "li",
-                {
-                    "class": "nav-item"
-                },
-                ""
-            ],
-            [
-                "i",
-                {
-                    "class": "ws-iconws-icon-down"
-                },
-                ""
-            ],
-            [
-                "p",
-                {},
-                ""
-            ],
-            [
-                "span",
-                {
-                    "class": "crta"
-                },
-                ""
-            ],
-            [
-                "button",
-                {
-                    "class": "menuitmnav-linkdropdown-toggle",
-                    "id": "dropdownMenuLink",
-                    "role": "button",
-                    "data-bs-toggle": "dropdown",
-                    "aria-haspopup": "true",
-                    "aria-expanded": "false"
-                },
-                ""
-            ],
-            [
-                "a",
-                {
-                    "href": "/documentation",
-                    "class": "dropdown-item"
-                },
-                "Documentation"
-            ],
-            [
-                "li",
-                {},
-                ""
-            ],
-            [
-                "a",
-                {
-                    "href": "/tutorials",
-                    "class": "dropdown-item"
-                },
-                "Video Tutorials"
-            ],
-            [
-                "li",
-                {},
-                ""
-            ],
-            [
-                "a",
-                {
-                    "href": "/test-sites",
-                    "class": "dropdown-item"
-                },
-                "Test Sites"
-            ],
-            [
-                "li",
-                {},
-                ""
-            ],
-            [
-                "a",
-                {
-                    "href": "https://forum.webscraper.io/",
-                    "target": "_blank",
-                    "rel": "noopener",
-                    "class": "dropdown-item"
-                },
-                "Forum"
-            ],
-            [
-                "li",
-                {},
-                ""
-            ],
-            [
-                "ul",
-                {
-                    "class": "dropdown-menu",
-                    "aria-labelledby": "dropdownMenuLink"
-                },
-                ""
-            ],
-            [
-                "li",
-                {
-                    "class": "nav-itemdropdown"
-                },
-                ""
-            ],
-            [
-                "i",
-                {
-                    "class": "browser-iconws-iconws-icon-chrome-500",
-                    "aria-hidden": "true"
-                },
-                ""
-            ],
-            [
-                "a",
-                {
-                    "href": "https://chromewebstore.google.com/detail/web-scraper-free-web-scra/jnhgnonknehpejjnehehllkliplmbmhn?hlen",
-                    "target": "_blank",
-                    "class": "nav-linkbtn-menu1install-extension",
-                    "rel": "noopener"
-                },
-                ""
-            ],
-            [
-                "li",
-                {
-                    "class": "nav-item"
-                },
-                ""
-            ],
-            [
-                "a",
-                {
-                    "href": "https://cloud.webscraper.io/",
-                    "class": "nav-linkbtn-menu2"
-                },
-                "Cloud Login"
-            ],
-            [
-                "li",
-                {
-                    "class": "nav-item"
-                },
-                ""
-            ],
-            [
-                "ul",
-                {
-                    "class": "navnavbar-navnavbar-right"
-                },
-                ""
-            ],
-            [
-                "nav",
-                {
-                    "id": "navbar",
-                    "role": "navigation",
-                    "class": "navbar-collapsecollapse"
-                },
-                ""
-            ],
-            [
-                "div",
-                {
-                    "class": "side-collapsein"
-                },
-                ""
-            ],
-            [
-                "div",
-                {
-                    "class": "container"
-                },
-                ""
-            ],
-            [
-                "header",
-                {
-                    "role": "banner",
-                    "class": "navbarfixed-topnavbar-expand-lgnavbar-darknavbar-staticsvg-background",
-                    "id": "navbar-top"
-                },
-                ""
-            ],
-            [
-                "div",
-                {
-                    "class": "formenu-herecontainer-fluid"
-                },
-                "\t"
-            ],
-            [
-                "h1",
-                {},
-                "Test Sites"
-            ],
-            [
-                "div",
-                {
-                    "class": "col-lg-12"
-                },
-                ""
-            ],
-            [
-                "div",
-                {
-                    "class": "row"
-                },
-                ""
-            ],
-            [
-                "div",
-                {
-                    "class": "container"
-                },
-                ""
-            ],
-            [
-                "div",
-                {
-                    "class": "container-fluidblog-hero"
-                },
-                ""
-            ],
-            [
-                "p",
-                {
-                    "style": "font-size:21px;"
-                },
-                "\t\t\tHere are some sites that you can use for training while learning how to\t\t\tuse the Web Scraper.\t\t"
-            ],
-            [
-                "a",
-                {
-                    "href": "/test-sites/e-commerce/allinone"
-                },
-                "\t\t\t\t\t\tE-commerce site\t\t\t\t\t"
-            ],
-            [
-                "h2",
-                {
-                    "class": "site-heading"
-                },
-                ""
-            ],
-            [
-                "p",
-                {
-                    "class": "lead"
-                },
-                "\t\t\t\t\tE-commerce site with multiple categories, subcategories.\t\t\t\t\tAll items are loaded in one page.\t\t\t\t"
-            ],
-            [
-                "div",
-                {
-                    "class": "col-lg-7order-lg-2"
-                },
-                ""
-            ],
-            [
-                "div",
-                {
-                    "class": "col-lg-5order-lg-1"
-                },
-                "\t\t\t"
-            ],
-            [
-                "div",
-                {
-                    "class": "rowtest-site"
-                },
-                ""
-            ],
-            [
-                "a",
-                {
-                    "href": "/test-sites/e-commerce/static"
-                },
-                "\t\t\t\t\t\tE-commerce site with pagination links\t\t\t\t\t"
-            ],
-            [
-                "h2",
-                {
-                    "class": "site-heading"
-                },
-                ""
-            ],
-            [
-                "p",
-                {
-                    "class": "lead"
-                },
-                "\t\t\t\t\tE-commerce site with multiple categories, subcategories.\t\t\t\t\tStandard links are used for pagination.\t\t\t\t"
-            ],
-            [
-                "div",
-                {
-                    "class": "col-lg-7order-lg-2"
-                },
-                ""
-            ],
-            [
-                "div",
-                {
-                    "class": "col-lg-5order-lg-1"
-                },
-                "\t\t\t"
-            ],
-            [
-                "div",
-                {
-                    "class": "rowtest-site"
-                },
-                ""
-            ],
-            [
-                "a",
-                {
-                    "href": "/test-sites/e-commerce/ajax"
-                },
-                "\t\t\t\t\t\tE-commerce site with AJAX pagination links\t\t\t\t\t"
-            ],
-            [
-                "h2",
-                {
-                    "class": "site-heading"
-                },
-                ""
-            ],
-            [
-                "p",
-                {
-                    "class": "lead"
-                },
-                "\t\t\t\t\tE-commerce site with multiple categories, subcategories.\t\t\t\t\tDynamic links that use data without reloading the page for\t\t\t\t\tpagination.\t\t\t\t"
-            ],
-            [
-                "div",
-                {
-                    "class": "col-lg-7order-lg-2"
-                },
-                ""
-            ],
-            [
-                "div",
-                {
-                    "class": "col-lg-5order-lg-1"
-                },
-                "\t\t\t"
-            ],
-            [
-                "div",
-                {
-                    "class": "rowtest-site"
-                },
-                ""
-            ],
-            [
-                "a",
-                {
-                    "href": "/test-sites/e-commerce/more"
-                },
-                "\t\t\t\t\t\tE-commerce site with \"Load more\" buttons\t\t\t\t\t"
-            ],
-            [
-                "h2",
-                {
-                    "class": "site-heading"
-                },
-                ""
-            ],
-            [
-                "p",
-                {
-                    "class": "lead"
-                },
-                "\t\t\t\t\tE-commerce site with multiple categories, subcategories.\t\t\t\t\tInstead of using pagination this site uses a \"Load more\"\t\t\t\t\tbutton to load more items.\t\t\t\t"
-            ],
-            [
-                "div",
-                {
-                    "class": "col-lg-7order-lg-2"
-                },
-                ""
-            ],
-            [
-                "div",
-                {
-                    "class": "col-lg-5order-lg-1"
-                },
-                "\t\t\t"
-            ],
-            [
-                "div",
-                {
-                    "class": "rowtest-site"
-                },
-                ""
-            ],
-            [
-                "a",
-                {
-                    "href": "/test-sites/e-commerce/scroll"
-                },
-                "\t\t\t\t\t\tE-commerce site that loads items while scrolling\t\t\t\t\t"
-            ],
-            [
-                "h2",
-                {
-                    "class": "site-heading"
-                },
-                ""
-            ],
-            [
-                "p",
-                {
-                    "class": "lead"
-                },
-                "\t\t\t\t\tE-commerce site with multiple categories, subcategories.\t\t\t\t\tInstead of using pagination this site loads items when user\t\t\t\t\tscrolls the page down.\t\t\t\t"
-            ],
-            [
-                "div",
-                {
-                    "class": "col-lg-7order-lg-2"
-                },
-                ""
-            ],
-            [
-                "div",
-                {
-                    "class": "col-lg-5order-lg-1"
-                },
-                "\t\t\t"
-            ],
-            [
-                "div",
-                {
-                    "class": "rowtest-site"
-                },
-                ""
-            ],
-            [
-                "a",
-                {
-                    "href": "/test-sites/tables"
-                },
-                "Table playground\t\t\t\t\t"
-            ],
-            [
-                "h2",
-                {
-                    "class": "site-heading"
-                },
-                ""
-            ],
-            [
-                "p",
-                {
-                    "class": "lead"
-                },
-                "\t\t\t\t\tThis page contains multiple tables. You can train using Table\t\t\t\t\tselector here.\t\t\t\t"
-            ],
-            [
-                "div",
-                {
-                    "class": "col-lg-7order-lg-2"
-                },
-                ""
-            ],
-            [
-                "div",
-                {
-                    "class": "col-lg-5order-lg-1"
-                },
-                "\t\t\t"
-            ],
-            [
-                "div",
-                {
-                    "class": "rowtest-site"
-                },
-                ""
-            ],
-            [
-                "div",
-                {
-                    "class": "containertest-sites"
-                },
-                ""
-            ],
-            [
-                "div",
-                {
-                    "class": "clearfix"
-                },
-                ""
-            ],
-            [
-                "div",
-                {
-                    "class": "push"
-                },
-                ""
-            ],
-            [
-                "div",
-                {
-                    "class": "wrapper"
-                },
-                ""
-            ],
-            [
-                "p",
-                {},
-                "Products"
-            ],
-            [
-                "li",
-                {},
-                ""
-            ],
-            [
-                "a",
-                {
-                    "class": "install-extension",
-                    "href": "https://chromewebstore.google.com/detail/web-scraper-free-web-scra/jnhgnonknehpejjnehehllkliplmbmhn?hlen",
-                    "target": "_blank",
-                    "rel": "noopener"
-                },
-                "\t\t\t\t\t\t\tWeb Scraper browser extension\t\t\t\t\t\t"
-            ],
-            [
-                "li",
-                {},
-                ""
-            ],
-            [
-                "a",
-                {
-                    "href": "/cloud-scraper"
-                },
-                "Web Scraper Cloud"
-            ],
-            [
-                "li",
-                {},
-                ""
-            ],
-            [
-                "ul",
-                {},
-                ""
-            ],
-            [
-                "div",
-                {
-                    "class": "col-lg-3"
-                },
-                ""
-            ],
-            [
-                "p",
-                {},
-                "Company"
-            ],
-            [
-                "li",
-                {},
-                ""
-            ],
-            [
-                "a",
-                {
-                    "href": "/about-us"
-                },
-                "About us"
-            ],
-            [
-                "li",
-                {},
-                ""
-            ],
-            [
-                "a",
-                {
-                    "href": "/contact"
-                },
-                "Contact"
-            ],
-            [
-                "li",
-                {},
-                ""
-            ],
-            [
-                "a",
-                {
-                    "href": "/privacy-policy"
-                },
-                "Website Privacy Policy"
-            ],
-            [
-                "li",
-                {},
-                ""
-            ],
-            [
-                "a",
-                {
-                    "href": "/extension-privacy-policy"
-                },
-                "Browser Extension Privacy Policy"
-            ],
-            [
-                "li",
-                {},
-                ""
-            ],
-            [
-                "a",
-                {
-                    "href": "https://webscraper.io/downloads/Web_Scraper_Media_Kit.zip"
-                },
-                "Media kit"
-            ],
-            [
-                "li",
-                {},
-                ""
-            ],
-            [
-                "a",
-                {
-                    "href": "/jobs"
-                },
-                "Jobs"
-            ],
-            [
-                "li",
-                {},
-                ""
-            ],
-            [
-                "ul",
-                {},
-                ""
-            ],
-            [
-                "div",
-                {
-                    "class": "col-lg-3"
-                },
-                ""
-            ],
-            [
-                "p",
-                {},
-                "Resources"
-            ],
-            [
-                "li",
-                {},
-                ""
-            ],
-            [
-                "a",
-                {
-                    "href": "/blog"
-                },
-                "Blog"
-            ],
-            [
-                "li",
-                {},
-                ""
-            ],
-            [
-                "a",
-                {
-                    "href": "/documentation"
-                },
-                "Documentation"
-            ],
-            [
-                "li",
-                {},
-                ""
-            ],
-            [
-                "a",
-                {
-                    "href": "/tutorials"
-                },
-                "Video Tutorials"
-            ],
-            [
-                "li",
-                {},
-                ""
-            ],
-            [
-                "a",
-                {
-                    "href": "/screenshots"
-                },
-                "Screenshots"
-            ],
-            [
-                "li",
-                {},
-                ""
-            ],
-            [
-                "a",
-                {
-                    "href": "/test-sites"
-                },
-                "Test Sites"
-            ],
-            [
-                "li",
-                {},
-                ""
-            ],
-            [
-                "a",
-                {
-                    "target": "_blank",
-                    "href": "https://forum.webscraper.io/",
-                    "rel": "noopener"
-                },
-                "Forum"
-            ],
-            [
-                "li",
-                {},
-                ""
-            ],
-            [
-                "a",
-                {
-                    "target": "_blank",
-                    "href": "https://status.webscraper.io/",
-                    "rel": "noopener"
-                },
-                "Status"
-            ],
-            [
-                "li",
-                {},
-                ""
-            ],
-            [
-                "ul",
-                {},
-                ""
-            ],
-            [
-                "div",
-                {
-                    "class": "col-lg-3"
-                },
-                ""
-            ],
-            [
-                "p",
-                {},
-                "CONTACT US"
-            ],
-            [
-                "li",
-                {},
-                ""
-            ],
-            [
-                "a",
-                {
-                    "href": "mailto:info@webscraper.io"
-                },
-                "info@webscraper.io"
-            ],
-            [
-                "li",
-                {},
-                ""
-            ],
-            [
-                "li",
-                {},
-                " Adazi, Latvia, LV-2164"
-            ],
-            [
-                "ul",
-                {},
-                ""
-            ],
-            [
-                "i",
-                {
-                    "class": "ws-iconws-icon-facebook-f"
-                },
-                ""
-            ],
-            [
-                "a",
-                {
-                    "href": "https://www.facebook.com/webscraperio/",
-                    "target": "_blank",
-                    "rel": "noopener",
-                    "aria-label": "WebScraperonFacebook"
-                },
-                ""
-            ],
-            [
-                "li",
-                {},
-                ""
-            ],
-            [
-                "i",
-                {
-                    "class": "ws-iconws-icon-twitter"
-                },
-                ""
-            ],
-            [
-                "a",
-                {
-                    "href": "https://twitter.com/webscraperio",
-                    "target": "_blank",
-                    "rel": "noopener",
-                    "aria-label": "WebScraperonX"
-                },
-                ""
-            ],
-            [
-                "li",
-                {},
-                ""
-            ],
-            [
-                "i",
-                {
-                    "class": "ws-iconws-icon-linkedin"
-                },
-                ""
-            ],
-            [
-                "a",
-                {
-                    "href": "https://lv.linkedin.com/company/web-scraper",
-                    "target": "_blank",
-                    "rel": "noopener",
-                    "aria-label": "WebScraperonLinkedIn"
-                },
-                ""
-            ],
-            [
-                "li",
-                {},
-                ""
-            ],
-            [
-                "i",
-                {
-                    "class": "ws-iconws-icon-youtube"
-                },
-                ""
-            ],
-            [
-                "a",
-                {
-                    "href": "https://youtube.com/@WebScraper/videos",
-                    "target": "_blank",
-                    "rel": "noopener",
-                    "aria-label": "WebScraperonYoutube"
-                },
-                ""
-            ],
-            [
-                "li",
-                {},
-                ""
-            ],
-            [
-                "i",
-                {
-                    "class": "browser-iconws-iconws-icon-chrome-dark"
-                },
-                ""
-            ],
-            [
-                "a",
-                {
-                    "class": "install-extensionbrowser-icon-dark",
-                    "href": "https://chromewebstore.google.com/detail/web-scraper-free-web-scra/jnhgnonknehpejjnehehllkliplmbmhn?hlen",
-                    "target": "_blank",
-                    "rel": "noopener",
-                    "aria-label": "DownloadtheWebScraperextension"
-                },
-                ""
-            ],
-            [
-                "li",
-                {},
-                ""
-            ],
-            [
-                "ul",
-                {
-                    "class": "smedia"
-                },
-                ""
-            ],
-            [
-                "div",
-                {
-                    "class": "col-lg-3"
-                },
-                ""
-            ],
-            [
-                "div",
-                {
-                    "class": "row"
-                },
-                ""
-            ],
-            [
-                "b",
-                {},
-                "Web Scraper"
-            ],
-            [
-                "p",
-                {
-                    "class": "copyright"
-                },
-                ""
-            ],
-            [
-                "div",
-                {
-                    "class": "col-lg-12"
-                },
-                ""
-            ],
-            [
-                "div",
-                {
-                    "class": "row"
-                },
-                ""
-            ],
-            [
-                "div",
-                {
-                    "class": "container"
-                },
-                ""
-            ],
-            [
-                "div",
-                {
-                    "class": "container-fluidfooter",
-                    "id": "layout-footer"
-                },
-                ""
-            ],
-            [
-                "body",
-                {},
-                ""
-            ],
-            [
-                "html",
-                {
-                    "lang": "en"
-                },
-                ""
-            ]
-        ]
+        "timestamp": "2025-04-28T11:49:34Z"
+    },
+    "https://webscraper.io/": {
+        "links": [
+            "https://webscraper.io/",
+            "https://webscraper.io/",
+            "https://webscraper.io/cloud-scraper",
+            "https://webscraper.io/pricing",
+            "https://webscraper.io/documentation",
+            "https://webscraper.io/tutorials",
+            "https://webscraper.io/test-sites",
+            "https://forum.webscraper.io/",
+            "https://chromewebstore.google.com/detail/web-scraper-free-web-scra/jnhgnonknehpejjnehehllkliplmbmhn?hlen",
+            "https://cloud.webscraper.io/",
+            "https://webscraper.io/pricing",
+            "https://chromewebstore.google.com/detail/web-scraper/jnhgnonknehpejjnehehllkliplmbmhn?hlen",
+            "https://chromewebstore.google.com/detail/web-scraper/jnhgnonknehpejjnehehllkliplmbmhn?hlen",
+            "https://addons.mozilla.org/en-US/firefox/addon/web-scraper/",
+            "https://webscraper.io/test-sites",
+            "https://webscraper.io/pricing",
+            "https://webscraper.io/pricing",
+            "https://chromewebstore.google.com/detail/web-scraper/jnhgnonknehpejjnehehllkliplmbmhn?hlen",
+            "https://cloud.webscraper.io/register?planproject",
+            "https://cloud.webscraper.io/register?planprofessional",
+            "https://cloud.webscraper.io/register?planbusiness",
+            "https://cloud.webscraper.io/register?planscale",
+            "https://chromewebstore.google.com/detail/web-scraper-free-web-scra/jnhgnonknehpejjnehehllkliplmbmhn?hlen",
+            "https://webscraper.io/cloud-scraper",
+            "https://webscraper.io/about-us",
+            "https://webscraper.io/contact",
+            "https://webscraper.io/privacy-policy",
+            "https://webscraper.io/extension-privacy-policy",
+            "https://webscraper.io/jobs",
+            "https://webscraper.io/blog",
+            "https://webscraper.io/documentation",
+            "https://webscraper.io/tutorials",
+            "https://webscraper.io/screenshots",
+            "https://webscraper.io/test-sites",
+            "https://forum.webscraper.io/",
+            "https://status.webscraper.io/",
+            "https://www.facebook.com/webscraperio/",
+            "https://twitter.com/webscraperio",
+            "https://lv.linkedin.com/company/web-scraper",
+            "https://youtube.com/@WebScraper/videos",
+            "https://chromewebstore.google.com/detail/web-scraper-free-web-scra/jnhgnonknehpejjnehehllkliplmbmhn?hlen"
+        ],
+        "timestamp": "2025-04-28T11:50:04Z"
+    },
+    "https://webscraper.io/cloud-scraper": {
+        "links": [
+            "https://webscraper.io/",
+            "https://webscraper.io/",
+            "https://webscraper.io/cloud-scraper",
+            "https://webscraper.io/pricing",
+            "https://webscraper.io/documentation",
+            "https://webscraper.io/tutorials",
+            "https://webscraper.io/test-sites",
+            "https://forum.webscraper.io/",
+            "https://chromewebstore.google.com/detail/web-scraper-free-web-scra/jnhgnonknehpejjnehehllkliplmbmhn?hlen",
+            "https://cloud.webscraper.io/",
+            "https://webscraper.io/pricing",
+            "https://webscraper.io/pricing",
+            "https://chromewebstore.google.com/detail/web-scraper/jnhgnonknehpejjnehehllkliplmbmhn?hlen",
+            "https://cloud.webscraper.io/register?planproject",
+            "https://cloud.webscraper.io/register?planprofessional",
+            "https://cloud.webscraper.io/register?planbusiness",
+            "https://cloud.webscraper.io/register?planscale",
+            "https://chromewebstore.google.com/detail/web-scraper-free-web-scra/jnhgnonknehpejjnehehllkliplmbmhn?hlen",
+            "https://webscraper.io/cloud-scraper",
+            "https://webscraper.io/about-us",
+            "https://webscraper.io/contact",
+            "https://webscraper.io/privacy-policy",
+            "https://webscraper.io/extension-privacy-policy",
+            "https://webscraper.io/jobs",
+            "https://webscraper.io/blog",
+            "https://webscraper.io/documentation",
+            "https://webscraper.io/tutorials",
+            "https://webscraper.io/screenshots",
+            "https://webscraper.io/test-sites",
+            "https://forum.webscraper.io/",
+            "https://status.webscraper.io/",
+            "https://www.facebook.com/webscraperio/",
+            "https://twitter.com/webscraperio",
+            "https://lv.linkedin.com/company/web-scraper",
+            "https://youtube.com/@WebScraper/videos",
+            "https://chromewebstore.google.com/detail/web-scraper-free-web-scra/jnhgnonknehpejjnehehllkliplmbmhn?hlen"
+        ],
+        "timestamp": "2025-04-28T11:50:49Z"
+    },
+    "https://webscraper.io/pricing": {
+        "links": [
+            "https://webscraper.io/",
+            "https://webscraper.io/",
+            "https://webscraper.io/cloud-scraper",
+            "https://webscraper.io/pricing",
+            "https://webscraper.io/documentation",
+            "https://webscraper.io/tutorials",
+            "https://webscraper.io/test-sites",
+            "https://forum.webscraper.io/",
+            "https://chromewebstore.google.com/detail/web-scraper-free-web-scra/jnhgnonknehpejjnehehllkliplmbmhn?hlen",
+            "https://cloud.webscraper.io/",
+            "https://chromewebstore.google.com/detail/web-scraper/jnhgnonknehpejjnehehllkliplmbmhn?hlen",
+            "https://cloud.webscraper.io/register?planproject",
+            "https://cloud.webscraper.io/register?planprofessional",
+            "https://cloud.webscraper.io/register?planbusiness",
+            "https://cloud.webscraper.io/register?planscale",
+            "https://chromewebstore.google.com/detail/web-scraper-free-web-scra/jnhgnonknehpejjnehehllkliplmbmhn?hlen",
+            "https://webscraper.io/cloud-scraper",
+            "https://webscraper.io/about-us",
+            "https://webscraper.io/contact",
+            "https://webscraper.io/privacy-policy",
+            "https://webscraper.io/extension-privacy-policy",
+            "https://webscraper.io/jobs",
+            "https://webscraper.io/blog",
+            "https://webscraper.io/documentation",
+            "https://webscraper.io/tutorials",
+            "https://webscraper.io/screenshots",
+            "https://webscraper.io/test-sites",
+            "https://forum.webscraper.io/",
+            "https://status.webscraper.io/",
+            "https://www.facebook.com/webscraperio/",
+            "https://twitter.com/webscraperio",
+            "https://lv.linkedin.com/company/web-scraper",
+            "https://youtube.com/@WebScraper/videos",
+            "https://chromewebstore.google.com/detail/web-scraper-free-web-scra/jnhgnonknehpejjnehehllkliplmbmhn?hlen"
+        ],
+        "timestamp": "2025-04-28T11:51:40Z"
+    },
+    "https://webscraper.io/documentation": {
+        "links": [
+            "https://webscraper.io/",
+            "https://webscraper.io/",
+            "https://webscraper.io/cloud-scraper",
+            "https://webscraper.io/pricing",
+            "https://webscraper.io/documentation",
+            "https://webscraper.io/tutorials",
+            "https://webscraper.io/test-sites",
+            "https://forum.webscraper.io/",
+            "https://chromewebstore.google.com/detail/web-scraper-free-web-scra/jnhgnonknehpejjnehehllkliplmbmhn?hlen",
+            "https://cloud.webscraper.io/",
+            "https://webscraper.io/documentation/installation",
+            "https://webscraper.io/documentation/open-web-scraper",
+            "https://webscraper.io/documentation/scraping-a-site",
+            "https://webscraper.io/documentation/selectors",
+            "https://webscraper.io/documentation/selectors/text-selector",
+            "https://webscraper.io/documentation/selectors/link-selector",
+            "https://webscraper.io/documentation/selectors/sitemap-xml-selector",
+            "https://webscraper.io/documentation/selectors/image-selector",
+            "https://webscraper.io/documentation/selectors/table-selector",
+            "https://webscraper.io/documentation/selectors/element-attribute-selector",
+            "https://webscraper.io/documentation/selectors/html-selector",
+            "https://webscraper.io/documentation/selectors/grouped-selector",
+            "https://webscraper.io/documentation/selectors/element-selector",
+            "https://webscraper.io/documentation/selectors/element-click-selector",
+            "https://webscraper.io/documentation/selectors/pagination-selector",
+            "https://webscraper.io/documentation/website-state-setup-2f-sign-in",
+            "https://webscraper.io/documentation/css-selector",
+            "https://webscraper.io/documentation/web-scraper-cloud",
+            "https://webscraper.io/documentation/web-scraper-cloud/sitemap-sync",
+            "https://webscraper.io/documentation/web-scraper-cloud/notifications",
+            "https://webscraper.io/documentation/web-scraper-cloud/data-quality-control",
+            "https://webscraper.io/documentation/web-scraper-cloud/api",
+            "https://webscraper.io/documentation/web-scraper-cloud/api/webhooks",
+            "https://webscraper.io/documentation/web-scraper-cloud/scheduler",
+            "https://webscraper.io/documentation/web-scraper-cloud/data-export",
+            "https://webscraper.io/documentation/web-scraper-cloud/parser",
+            "https://webscraper.io/documentation/web-scraper-cloud/parser/replace-text",
+            "https://webscraper.io/documentation/web-scraper-cloud/parser/regex-match",
+            "https://webscraper.io/documentation/web-scraper-cloud/parser/append-and-prepend-text",
+            "https://webscraper.io/documentation/web-scraper-cloud/parser/strip-html",
+            "https://webscraper.io/documentation/web-scraper-cloud/parser/remove-whitespaces",
+            "https://webscraper.io/documentation/web-scraper-cloud/parser/remove-column",
+            "https://webscraper.io/documentation/web-scraper-cloud/parser/virtual-column",
+            "https://webscraper.io/documentation/web-scraper-cloud/parser/convert-unix-timestamp",
+            "https://chrome.google.com/webstore/detail/web-scraper/jnhgnonknehpejjnehehllkliplmbmhn",
+            "https://addons.mozilla.org/en-US/firefox/addon/web-scraper/",
+            "https://chromewebstore.google.com/detail/web-scraper-free-web-scra/jnhgnonknehpejjnehehllkliplmbmhn?hlen",
+            "https://webscraper.io/cloud-scraper",
+            "https://webscraper.io/about-us",
+            "https://webscraper.io/contact",
+            "https://webscraper.io/privacy-policy",
+            "https://webscraper.io/extension-privacy-policy",
+            "https://webscraper.io/jobs",
+            "https://webscraper.io/blog",
+            "https://webscraper.io/documentation",
+            "https://webscraper.io/tutorials",
+            "https://webscraper.io/screenshots",
+            "https://webscraper.io/test-sites",
+            "https://forum.webscraper.io/",
+            "https://status.webscraper.io/",
+            "https://www.facebook.com/webscraperio/",
+            "https://twitter.com/webscraperio",
+            "https://lv.linkedin.com/company/web-scraper",
+            "https://youtube.com/@WebScraper/videos",
+            "https://chromewebstore.google.com/detail/web-scraper-free-web-scra/jnhgnonknehpejjnehehllkliplmbmhn?hlen"
+        ],
+        "timestamp": "2025-04-28T11:52:43Z"
     }
 }

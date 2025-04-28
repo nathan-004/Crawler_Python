@@ -35,7 +35,7 @@ class JSONStockage:
         with open(self.filename, 'w') as file:
             json.dump(data, file, indent=4)
 
-    def append(self, url, links, elements):
+    def append(self, url, links):
         """
         Ajoute des données à la fin du fichier JSON.
         :param url: URL à ajouter.
@@ -49,16 +49,14 @@ class JSONStockage:
             data[url] = {
                 "links": links,
                 "timestamp": timestamp,
-                "elements": elements
             }
         else:
             data[url]["links"].extend(links)
             data[url]["timestamp"] = timestamp
-            data[url]["elements"].extend(elements)
 
         self.save(data)
 
-    def data_append(self, url, links, elements):
+    def data_append(self, url, links):
         """
         Ajoute des données au dictionnaire de données sans les sauvegarder dans le fichier.
         :param url: URL à ajouter + liens associés + éléments associés."""
@@ -69,12 +67,10 @@ class JSONStockage:
             self.data[url] = {
                 "links": links,
                 "timestamp": timestamp,
-                "elements": elements
             }
         else:
             self.data[url]["links"].extend(links)
             self.data[url]["timestamp"] = timestamp
-            self.data[url]["elements"].extend(elements)
 
     def save_stock(self):
         """
@@ -123,15 +119,28 @@ class TXTStockage:
         with open(self.filename, 'w') as file:
             file.write(data)
 
-    def append(self, data):
+    def append(self, data, timestamp=None):
         """
         Ajoute des données à la fin du fichier texte.
         :param data: Données à ajouter.
         """
+        if timestamp:
+            timestamp = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
+            data = f"{timestamp} - {data}"
+
         with open(self.filename, 'a') as file:
             file.write(data + "\n")
+
+    def reset(self):
+        """
+        Réinitialise le fichier texte en le vidant.
+        """
+        with open(self.filename, 'w') as file:
+            file.write("")
 
 
 
 if __name__ == "__main__":
-    pass
+    JSONStockage("urls.json").reset()
+    TXTStockage("urls_stack.txt").reset()
+    TXTStockage("logs.txt").reset()

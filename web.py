@@ -1,3 +1,5 @@
+from stockage import TXTStockage
+
 import requests
 
 class WebScrapping():
@@ -8,6 +10,7 @@ class WebScrapping():
             "zip",
             "pdf",
         ]
+        self.logs = TXTStockage("logs.txt")
 
     def get_html_elements(self, url=None, html_text=None):
         """
@@ -77,6 +80,7 @@ class WebScrapping():
                         elements.append((*self.get_arguments(stack.last_balise(current_end)), current_content))
                     except TypeError as e:
                         print(f"Error: {e}, Current character : {idx}, Current page : {url}, Stack: {stack.stack}")
+                        self.logs.append(f"Error: {e}, Current character : {idx}, Current page : {url}, Current start: {current_start}, Current end: {current_end}", timestamp=True)
                         pass
                     state = "outside"
                     current_start = ""
@@ -196,6 +200,8 @@ class WebScrapping():
         str
             URL jointe
         """
+        if not url:
+            return url_base
         if url.startswith("http"):
             return url
         elif url.startswith("../"):
@@ -208,6 +214,10 @@ class WebScrapping():
             domain = url_base[1].split("/")[0]
             url_base = url_base[0] + "//" + domain
             return url_base + url
+        elif url.startswith("./"):
+            if not url_base.endswith("/"):
+                url_base += "/"
+            return "/".join(url_base.split("/")[:-1]) + url[2:]  # Supprime "./" et concatène avec le répertoire courant
         else:
             sep = "/" if url_base[-1] != "/" and url[0] != "/" else ""
             return url_base + sep + url
