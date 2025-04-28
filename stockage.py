@@ -1,5 +1,45 @@
 import json
 import time
+import sqlite3
+
+class SQLStockage:
+    """
+    Classe de stockage pour les données SQL.
+    """
+
+    def __init__(self, db_name):
+        """
+        Initialise le stockage avec un nom de base de données.
+        :param db_name: Nom de la base de données.
+        """
+        self.db_name = db_name
+        self.data = self.load()
+
+    def load(self):
+        """
+        Charge les données depuis la base de données SQL.
+        :return: Données chargées.
+        """
+        # Implémentation spécifique à la base de données SQL
+        conn = sqlite3.connect(self.db_name)
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM urls")
+        data = cursor.fetchall()
+        conn.close()
+        return data
+
+    def save(self, data):
+        """
+        Sauvegarde les données dans la base de données SQL.
+        :param data: Données à sauvegarder.
+        """
+        # Implémentation spécifique à la base de données SQL
+        conn = sqlite3.connect(self.db_name)
+        cursor = conn.cursor()
+        cursor.execute("CREATE TABLE IF NOT EXISTS urls (url TEXT, links TEXT, timestamp TEXT)")
+        cursor.execute("INSERT INTO urls (url, links, timestamp) VALUES (?, ?, ?)", (data['url'], json.dumps(data['links']), data['timestamp']))
+        conn.commit()
+        conn.close()
 
 class JSONStockage:
     """

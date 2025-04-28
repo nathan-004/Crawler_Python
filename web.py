@@ -12,6 +12,8 @@ class WebScrapping():
         ]
         self.logs = TXTStockage("logs.txt")
 
+        self.validate_urls = set()
+
     def get_html_elements(self, url=None, html_text=None):
         """
         Définir dans que état le programme est à chaque moment : 
@@ -234,7 +236,11 @@ class WebScrapping():
         bool
             True si l'URL est valide, False sinon
         """
+        if url in self.validate_urls:
+            return True
+
         if requests.get(url).status_code == 200:
+            self.validate_urls.add(url)
             return True
         else:
             return False
