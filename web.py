@@ -5,7 +5,8 @@ import requests
 class WebScrapping():
     def __init__(self, url=""):
         self.url = url
-        self.elements = self.get_html_elements()
+        if url != "":
+            self.elements = self.get_html_elements()
         self.file_exceptions = [
             "zip",
             "pdf",
@@ -81,7 +82,7 @@ class WebScrapping():
                     try:
                         elements.append((*self.get_arguments(stack.last_balise(current_end)), current_content))
                     except TypeError as e:
-                        print(f"Error: {e}, Current character : {idx}, Current page : {url}, Stack: {stack.stack}")
+                        print(f"Error: {e}, Current character : {idx}, Current page : {url}, Current start: {current_start}, Current end: {current_end}")
                         self.logs.append(f"Error: {e}, Current character : {idx}, Current page : {url}, Current start: {current_start}, Current end: {current_end}", timestamp=True)
                         pass
                     state = "outside"
@@ -239,11 +240,111 @@ class WebScrapping():
         if url in self.validate_urls:
             return True
 
-        if requests.get(url).status_code == 200:
-            self.validate_urls.add(url)
-            return True
-        else:
+        try:
+            response = requests.get(url, timeout=5) # Timeout de 5 secondes
+            return response.status_code == 200
+        except requests.exceptions.RequestException:
+            # Prend en charge :
+            # - ChunkedEncodingError
+            # - ConnectionError, Timeout, TooManyRedirects…
+            self.logs.append(f"Error: {url}", timestamp=True)
             return False
+        
+    def find_domain(self, url:str):
+        """
+        Parametres
+        ---------
+        url:str
+            URL à vérifier
+
+        Retourne
+        -------
+        str
+            Domaine de l'URL
+        """
+        if url.startswith("http"):
+            url = url.split("//")
+            return url[0] + "//" + url[1].split("/")[0]
+        else:
+            return url.split("/")[0]
+        
+    def find_path(self, url:str):
+        """
+        Parametres
+        ---------
+        url:str
+            URL à vérifier
+
+        Retourne
+        -------
+        str
+            Chemin de l'URL
+        """
+
+        if url.startswith("http"):
+            url = url.split("//")
+            return "/" + "/".join(url[1].split("/")[1:])
+        else:
+            return "/" + "/".join(url.split("/")[1:])
+        
+class RobotFileParser():
+    def __init__(self):
+        self.disallowed = set()
+        self.visited = set()
+        self.crawler_name = "*"
+        self.allowed = set()
+
+    def parse(self, url):
+        """
+        Parse le fichier robots.txt à partir de l'URL donnée.
+        :param url: URL du fichier robots.txt.
+        """
+        url = WebScrapping().find_domain(url)
+        url_robot = url + "/robots.txt"
+
+        if url in self.visited:
+            return
+
+        response = requests.get(url_robot)
+        if response.status_code == 200:
+            lines = response.text.splitlines()
+            user_agent_block = False
+            user_agent_used = False
+            for line in lines:
+                line = line.strip()
+                if line.lower().startswith("user-agent:"):
+                    user_agent = line.split(":")[1].strip()
+                    user_agent_block = (user_agent == self.crawler_name or user_agent == "*" or not user_agent_used)
+                elif user_agent_block and line.lower().startswith("disallow:"):
+                    path = line.split(":")[1].strip()
+                    self.disallowed.add(WebScrapping().urljoin(url_robot, path))
+                    user_agent_used = True
+                elif user_agent_block and line.lower().startswith("allow:"):
+                    path = line.split(":")[1].strip()
+                    self.allowed.add(WebScrapping().urljoin(url_robot, path))
+                    user_agent_used = True
+                else:
+                    user_agent_used = True
+
+        self.visited.add(url_robot)
+    
+    def is_allowed(self, url:str):
+        """
+        Vérifie si l'URL est autorisée par le fichier robots.txt.
+        :param url: URL à vérifier.
+        :return: True si l'URL est autorisée, False sinon.
+        """
+        if url in self.allowed:
+            return True
+
+        path = WebScrapping().find_path(url)
+        domain = WebScrapping().find_domain(url)
+
+        for disallowed_path in self.disallowed:
+            if WebScrapping().find_domain(disallowed_path) == domain:
+                if disallowed_path and path.startswith(WebScrapping().find_path(disallowed_path)):
+                    return False
+        return True
 
 class Stack():
     def __init__(self):
@@ -294,6 +395,12 @@ if __name__ == "__main__":
     print(a.urljoin("https://webscraper.io/test-sites/test2", "/test-sites3"))
     print(a.urljoin("https://webscraper.io/test-sites", "../test-sites"))
     print(a.urljoin("https://webscraper.io/test-sites", "https://test-sites/test-sites"))
+
+    print(a.find_domain("https://webscraper.io/test-sites/test2"))
+    print(a.find_domain("https://test-sites/test-sites"))
+
+    print(a.find_path("https://webscraper.io/test-sites/test2"))
+    print(a.find_path("https://test-sites/test-sites"))
 
 
 # https://webscraper.io/test-sites
