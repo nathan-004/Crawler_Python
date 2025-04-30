@@ -1,6 +1,14 @@
 from stockage import TXTStockage
 
 import requests
+import re
+
+def remove_extra_whitespaces(text):
+    """
+    Removes extra whitespaces (more than one) from the input text.
+    """
+    return re.sub(r'\s{2,}', ' ', text).strip()  # Replace 2 or more spaces with a single space
+
 
 class WebScrapping():
     def __init__(self, url=""):
@@ -14,6 +22,7 @@ class WebScrapping():
         self.logs = TXTStockage("logs.txt")
 
         self.validate_urls = set()
+        self.not_validate_urls = set()
 
     def get_html_elements(self, url=None, html_text=None):
         """
@@ -107,7 +116,7 @@ class WebScrapping():
             
             elif state == "inside_comment":
                 if char == ">":
-                    elements.append((("comment", ""), comment))
+                    elements.append(("comment", {}, comment))
                     comment = ""
                     state = "outside"
                 else:
@@ -239,10 +248,18 @@ class WebScrapping():
         """
         if url in self.validate_urls:
             return True
+        elif url in self.not_validate_urls:
+            return False
 
         try:
             response = requests.get(url, timeout=5) # Timeout de 5 secondes
-            return response.status_code == 200
+
+            if response.status_code == 200:
+                self.validate_urls.add(url)
+                return True
+            else:
+                self.not_validate_urls.add(url)
+                return False
         except requests.exceptions.RequestException:
             # Prend en charge :
             # - ChunkedEncodingError
@@ -286,6 +303,33 @@ class WebScrapping():
             return "/" + "/".join(url[1].split("/")[1:])
         else:
             return "/" + "/".join(url.split("/")[1:])
+        
+    def get_content(self):
+        """
+        Retourne
+        -------
+        dict
+            Contenu de la page 'self.url' sous forme de dictionnaire en utilisant 
+            'title': 'Titre de la page', 'content': 'Contenu de la page'
+        """
+        
+        title = self.find_balise("title")[0][2]
+
+        content = {}
+        exceptions = set(["title", "comment", "script", "style", "link", "meta", "head"])
+
+        for element in self.elements:
+            if element[0] in exceptions:
+                continue
+            
+            for word in element[2].split():
+                if word not in content:
+                    content[word] = 0
+                content[word] += 1
+        
+        return content
+        
+        
         
 class RobotFileParser():
     def __init__(self):
@@ -402,6 +446,7 @@ if __name__ == "__main__":
     print(a.find_path("https://webscraper.io/test-sites/test2"))
     print(a.find_path("https://test-sites/test-sites"))
 
+    print(a.get_content())
 
 # https://webscraper.io/test-sites
 # https://www.w3schools.com/html/tryit.asp?filename=tryhtml_intro
