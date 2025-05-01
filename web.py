@@ -1,6 +1,7 @@
 from stockage import TXTStockage
 
 import requests
+from urllib.parse import urlparse
 import re
 
 def remove_extra_whitespaces(text):
@@ -252,7 +253,7 @@ class WebScrapping():
             return False
 
         try:
-            response = requests.get(url, timeout=5) # Timeout de 5 secondes
+            response = requests.head(url, timeout=5, allow_redirects=True) # Timeout de 5 secondes
 
             if response.status_code == 200:
                 self.validate_urls.add(url)
@@ -265,6 +266,22 @@ class WebScrapping():
             # - ChunkedEncodingError
             # - ConnectionError, Timeout, TooManyRedirects…
             self.logs.append(f"Error: {url}", timestamp=True)
+            return False
+        
+    def is_valide_url_format(self, url:str):
+        """
+        Vérifie rapidement si une URL est bien formée (sans requête réseau).
+        """
+        if url in self.validate_urls:
+            return True
+        elif url in self.not_validate_urls:
+            return False
+
+        parsed = urlparse(url)
+        if parsed.scheme in ("http", "https") and parsed.netloc:
+            return True
+        else:
+            self.not_validate_urls.add(url)
             return False
         
     def find_domain(self, url:str):
