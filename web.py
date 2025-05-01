@@ -254,12 +254,12 @@ class WebScrapping():
 
         try:
             response = requests.head(url, timeout=5, allow_redirects=True) # Timeout de 5 secondes
-
             if response.status_code == 200:
                 self.validate_urls.add(url)
                 return True
             else:
                 self.not_validate_urls.add(url)
+                print(f"Response: {response.status_code}")
                 return False
         except requests.exceptions.RequestException:
             # Prend en charge :
@@ -281,7 +281,7 @@ class WebScrapping():
         if parsed.scheme in ("http", "https") and parsed.netloc:
             return True
         else:
-            self.not_validate_urls.add(url)
+            #self.not_validate_urls.add(url)
             return False
         
     def find_domain(self, url:str):
