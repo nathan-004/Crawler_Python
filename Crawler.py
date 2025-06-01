@@ -1,5 +1,5 @@
 from web import WebScrapping, Stack, RobotFileParser
-from stockage import JSONStockage, TXTStockage
+from stockage import JSONStockage, TXTStockage, SQLStockage
 
 import time
 
@@ -8,6 +8,7 @@ class Crawler():
         self.url = start_url
         self.web = WebScrapping(url=self.url)
         self.stack = Stack()  # Déplacer la pile ici
+        self.sql_stockage = SQLStockage("urls.db")
 
     def crawl_bfs(self, debug=False):
         """
@@ -53,6 +54,13 @@ class Crawler():
                 if debug:
                     start_web_scrap = time.time()
                 self.web.elements = self.web.get_html_elements()
+                self.sql_stockage.append_url(
+                    url = url,
+                    domain=self.web.find_domain(url),
+                    title=self.web.find_balise("title")[0][2],
+                    word_freq=self.web.get_content(),
+                    is_valid=True,
+                )
                 balises = self.web.find_balise("a")
                 if debug:
                     end_web_scrap = time.time()
@@ -129,6 +137,9 @@ if __name__ == "__main__":
         text_stockage.save(crawler.stack.stack_to_string())
         print("Sauvegarde des données dans le fichier urls.json")
         crawler.json_stockage.save_stock()
+        print("Sauvegarde des données dans la base de données")
+        for line in crawler.sql_stockage.to_save:
+            crawler.sql_stockage.save_url(*line)
         logs.append("Sauvegarde des données ...", timestamp=True)
 
 

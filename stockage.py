@@ -7,39 +7,83 @@ class SQLStockage:
     Classe de stockage pour les données SQL.
     """
 
+    N = 100
+
     def __init__(self, db_name):
         """
         Initialise le stockage avec un nom de base de données.
         :param db_name: Nom de la base de données.
         """
         self.db_name = db_name
-        self.data = self.load()
+        self._init_db()
+        self.to_save = []
 
-    def load(self):
+    def _init_db(self):
         """
-        Charge les données depuis la base de données SQL.
-        :return: Données chargées.
+        Crée la table si elle n'existe pas.
         """
-        # Implémentation spécifique à la base de données SQL
         conn = sqlite3.connect(self.db_name)
         cursor = conn.cursor()
-        cursor.execute("SELECT * FROM urls")
-        data = cursor.fetchall()
-        conn.close()
-        return data
-
-    def save(self, data):
-        """
-        Sauvegarde les données dans la base de données SQL.
-        :param data: Données à sauvegarder.
-        """
-        # Implémentation spécifique à la base de données SQL
-        conn = sqlite3.connect(self.db_name)
-        cursor = conn.cursor()
-        cursor.execute("CREATE TABLE IF NOT EXISTS urls (url TEXT, links TEXT, timestamp TEXT)")
-        cursor.execute("INSERT INTO urls (url, links, timestamp) VALUES (?, ?, ?)", (data['url'], json.dumps(data['links']), data['timestamp']))
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS urls (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                url TEXT UNIQUE,
+                domain TEXT,
+                title TEXT,
+                word_freq TEXT,
+                date_scraped DATETIME,
+                is_valid BOOLEAN
+            );
+        ''')
         conn.commit()
         conn.close()
+
+    def save_url(self, url, domain=None, title=None, word_freq=None, is_valid=True, timestamp=None):
+        """
+        Sauvegarde une URL avec ses métadonnées dans la base.
+
+        Parameters
+        ----------
+        word_freq:dict
+            Dictionnaire sous forme {"mot": occurence}
+        """
+        date_scraped = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()) if timestamp is not None else timestamp
+        word_freq = json.dumps(word_freq)
+        conn = sqlite3.connect(self.db_name)
+        cursor = conn.cursor()
+        try:
+            cursor.execute('''
+                INSERT OR IGNORE INTO urls (url, domain, title, word_freq, date_scraped, is_valid)
+                VALUES (?, ?, ?, ?, ?, ?)
+            ''', (url, domain, title, word_freq, date_scraped, is_valid))
+            conn.commit()
+        except sqlite3.Error as e:
+            print(f"Erreur lors de l'insertion: {e}")
+        finally:
+            conn.close()
+
+    def append_url(self, url, domain=None, title=None, word_freq=None, is_valid=None):
+        """
+        Stocke les valeurs dans une liste et tous les 100 urls, sauvegarde tout
+        """
+        print(len(self.to_save))
+        if len(self.to_save) >= self.N:
+            for line in self.to_save:
+                self.save_url(*line)
+            self.to_save.clear()
+        else:
+            self.to_save.append([url, domain, title, word_freq, is_valid, time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())])
+
+    def load_all_urls(self):
+        """
+        Récupère toutes les URLs stockées.
+        """
+        conn = sqlite3.connect(self.db_name)
+        cursor = conn.cursor()
+        cursor.execute("SELECT url, domain, title, content_snippet, date_scraped, is_valid FROM urls")
+        rows = cursor.fetchall()
+        conn.close()
+        return rows
 
 class JSONStockage:
     """
@@ -60,7 +104,7 @@ class JSONStockage:
         :return: Données chargées.
         """
         try:
-            with open(self.filename, 'r') as file:
+            with open(self.filename, 'r', encoding="utf-8") as file:
                 data = json.load(file)
             return data
         except FileNotFoundError:
@@ -72,7 +116,7 @@ class JSONStockage:
         :param data -> dict: Données à sauvegarder.
         Ajout d'un timestamp à chaque sauvegarde.
         """
-        with open(self.filename, 'w') as file:
+        with open(self.filename, 'w', encoding="utf-8") as file:
             json.dump(data, file, indent=4)
 
     def append(self, url, links):
@@ -145,7 +189,7 @@ class TXTStockage:
         :return: Données chargées.
         """
         try:
-            with open(self.filename, 'r') as file:
+            with open(self.filename, 'r', encoding="utf-8") as file:
                 data = file.read()
             return data
         except FileNotFoundError:
@@ -156,7 +200,7 @@ class TXTStockage:
         Sauvegarde les données dans le fichier texte.
         :param data: Données à sauvegarder.
         """
-        with open(self.filename, 'w') as file:
+        with open(self.filename, 'w', encoding="utf-8") as file:
             file.write(data)
 
     def append(self, data, timestamp=None):

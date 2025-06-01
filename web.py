@@ -12,7 +12,7 @@ def remove_extra_whitespaces(text):
 
 
 class WebScrapping():
-    def __init__(self, url=""):
+    def __init__(self, url="", languages=["en", "fr"]):
         self.url = url
         if url != "":
             self.elements = self.get_html_elements()
@@ -24,6 +24,8 @@ class WebScrapping():
 
         self.validate_urls = set()
         self.not_validate_urls = set()
+
+        self.languages = set(languages)
 
     def get_html_elements(self, url=None, html_text=None):
         """
@@ -253,10 +255,17 @@ class WebScrapping():
             return False
 
         try:
-            response = requests.head(url, timeout=5, allow_redirects=True) # Timeout de 5 secondes
+            response = requests.head(url, timeout=5000, allow_redirects=True) # Timeout de 5 secondes
+            lang = response.headers['Content-language'] if 'Content-language' in response.headers else None
+
             if response.status_code == 200:
-                self.validate_urls.add(url)
-                return True
+                if lang in self.languages:
+                    self.validate_urls.add(url)
+                    return True
+                else:
+                    print(f"Language : {lang}")
+                    self.not_validate_urls.add(url)
+                    return False
             else:
                 self.not_validate_urls.add(url)
                 print(f"Response: {response.status_code}")
@@ -326,14 +335,11 @@ class WebScrapping():
         Retourne
         -------
         dict
-            Contenu de la page 'self.url' sous forme de dictionnaire en utilisant 
-            'title': 'Titre de la page', 'content': 'Contenu de la page'
+            Le contenu de la page sous forme {"mot": occurences}
         """
-        
-        title = self.find_balise("title")[0][2]
 
         content = {}
-        exceptions = set(["title", "comment", "script", "style", "link", "meta", "head"])
+        exceptions = set(["comment", "script", "style", "link", "meta", "head"])
 
         for element in self.elements:
             if element[0] in exceptions:
@@ -344,9 +350,7 @@ class WebScrapping():
                     content[word] = 0
                 content[word] += 1
         
-        return content
-        
-        
+        return content    
         
 class RobotFileParser():
     def __init__(self):
