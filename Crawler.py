@@ -116,7 +116,7 @@ class Crawler():
 
 
 if __name__ == "__main__":
-    start_url = "https://www.google.com/"
+    start_url = "https://fr.wikipedia.org/wiki/Test"
     logs = TXTStockage("logs.txt")
     logs.append(f"Début du scraping, url de départ : {start_url}", timestamp=True)
 
