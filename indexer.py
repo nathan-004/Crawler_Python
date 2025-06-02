@@ -1,4 +1,4 @@
-from stockage import SQLStockage
+from stockage import SQLStockage, JSONStockage
 
 import sqlite3
 import json
@@ -9,6 +9,14 @@ class Indexer:
     def __init__(self, filename="words.db"):
         self.filename = filename
         self.create_db()
+        self.parameters = JSONStockage("parameters.json")
+        self.par = self.parameters.load()
+        
+        if self.par == {}:
+            self.parameters.save({"Index": 0})
+            self.index = 0
+        else:
+            self.index = self.par["Index"]
     
     def create_db(self):
         """containers contient les urls qui contiennent ce mot avec la fréquence"""
@@ -27,15 +35,18 @@ class Indexer:
     def index_db(self, db_name="urls.db"):
         """Make the database with every word"""
         sql = SQLStockage(db_name)
-        donnees = sql.load_all_urls()
+        donnees = sql.load_all_urls()[self.index:]
         
         for line in donnees:
+            self.index += 1
             url = line[0]
             words = json.loads(line[3])
             total = sum(words.values())
             
             for word in words:
                 self.add_word(word, url, words[word])
+            
+            self.parameters.save({"Index": self.index})
             
         print(len(donnees))
     
@@ -64,21 +75,36 @@ class Indexer:
         
         if line is None:
             freq_word = json.dumps({url : freq_word})
-            conn = sqlite3.connect(self.db_name)
+            conn = sqlite3.connect(self.filename)
             cursor = conn.cursor()
             try:
                 cursor.execute('''
                     INSERT OR IGNORE INTO words (word, containers)
                     VALUES (?, ?)
-                ''', (word, word_freq))
+                ''', (word, freq_word))
                 conn.commit()
             except sqlite3.Error as e:
                 print(f"Erreur lors de l'insertion: {e}")
             finally:
                 conn.close()
-
         else:
-            print(word)
+            line = list(line)
+            line[2] = json.loads(line[2])
+            conn = sqlite3.connect(self.filename)
+            cursor = conn.cursor()
+            line[2][url] = freq_word
+            containers = json.dumps(line[2])
+            try:
+                cursor.execute('''
+                    UPDATE words
+                    SET containers = ?
+                    WHERE word=?
+                ''', (containers, word))
+                conn.commit()
+            except sqlite3.Error as e:
+                print(f"Erreur lors de l'insertion: {e}")
+            finally:
+                conn.close()
             
 if __name__ == "__main__":
     idx = Indexer()
