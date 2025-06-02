@@ -3,9 +3,7 @@ import time
 import sqlite3
 
 class SQLStockage:
-    """
-    Classe de stockage pour les données SQL.
-    """
+    """Classe de stockage pour les données SQL."""
 
     N = 100
 
@@ -80,7 +78,7 @@ class SQLStockage:
         """
         conn = sqlite3.connect(self.db_name)
         cursor = conn.cursor()
-        cursor.execute("SELECT url, domain, title, content_snippet, date_scraped, is_valid FROM urls")
+        cursor.execute("SELECT url, domain, title, word_freq, date_scraped, is_valid FROM urls")
         rows = cursor.fetchall()
         conn.close()
         return rows
