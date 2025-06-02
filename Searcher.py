@@ -18,7 +18,21 @@ class Searcher:
         """
         words = query.split(" ")
         
-        pass
+        max_score = 0
+        max_url = ""
+        
+        for word in words:
+            conn = sqlite3.connect("words.db")
+            cursor = conn.cursor()
+            cursor.execute("SELECT containers FROM words WHERE word=?", (word,))
+            urls = json.loads(cursor.fetchone()[0])
+            for url in urls:
+                score = sum([self.keyword_searching_algorithm(w, url) for w in word])
+                if score >= max_score:
+                    max_score = score
+                    max_url = url
+                    
+        return max_url
         
     def keyword_searching_algorithm(self, word, url):
         """Use words.db to assign a score to an url with the word"""
@@ -47,4 +61,4 @@ class Searcher:
     
 if __name__ == "__main__":
     s = Searcher()
-    print(s.keyword_searching_algorithm("le", "https://fr.wikipedia.org/wiki/Test"))
+    print(s.search("France"))

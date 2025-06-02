@@ -12,7 +12,7 @@ def remove_extra_whitespaces(text):
 
 
 class WebScrapping():
-    def __init__(self, url="", languages=["en", "fr"]):
+    def __init__(self, url="", languages=["en", "fr", None]):
         self.url = url
         if url != "":
             self.elements = self.get_html_elements()
@@ -346,9 +346,9 @@ class WebScrapping():
                 continue
             
             for word in element[2].split():
-                if word not in content:
-                    content[word] = 0
-                content[word] += 1
+                if word.lower() not in content:
+                    content[word.lower()] = 0
+                content[word.lower()] += 1
         
         return content    
         
