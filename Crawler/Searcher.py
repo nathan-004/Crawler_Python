@@ -16,15 +16,16 @@ class Searcher:
         ----------
         query:str
         """
-        words = query.split(" ")
+        words = query.lower().split(" ")
 
         max_score = 0
         max_url = ""
         
         conn = sqlite3.connect("words.db")
         cursor = conn.cursor()
-        cursor.execute("SELECT * FROM words")
-        print([line[1] for line in cursor.fetchall()])
+        cursor.execute("SELECT * FROM words WHERE word='film'")
+        print(cursor.fetchall())
+        #print([line[1] for line in cursor.fetchall()])
         conn.close() 
         
         
@@ -69,4 +70,4 @@ class Searcher:
 
 if __name__ == "__main__":
     s = Searcher()
-    print(s.search("ornithologie"))
+    print(s.search("film"))
