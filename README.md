@@ -12,3 +12,7 @@ Permet de parcourir une page web et d'en trouver des élément.
 #### [Crawler](https://github.com/nathan-004/Crawler_Python/blob/main/Crawler%20(2).py)
 
 Utilise [web.py](web.py) pour modifier [database.json](database.json).
+
+#### Ressources
+
+Exemple code : [mwmbl](https://github.com/mwmbl/mwmbl)
