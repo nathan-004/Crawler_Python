@@ -1,21 +1,241 @@
 <!DOCTYPE html>
-
-<html lang="fr">
-  <head>
+<html lang="en">
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Search Engine</title>
-    <link rel="stylesheet" href="./style/style.css">
-    <!--<link rel="icon" href="./favicon.ico" type="image/x-icon">-->
-  </head>
-  <body>
-	<header>
-  
-	</header>
-    <main>
-         
-    </main>
-    <script src="index.js"></script>
-  </body>
+    <title>Neon Background</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            overflow: hidden;
+            background: #0a0a0a;
+            height: 100vh;
+            position: relative;
+        }
+
+        .neon-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 20% 50%, #ff00ff22 0%, transparent 50%),
+                        radial-gradient(circle at 80% 20%, #00ffff22 0%, transparent 50%),
+                        radial-gradient(circle at 40% 80%, #ffff0022 0%, transparent 50%),
+                        linear-gradient(135deg, #0a0a0a 0%, #1a0a1a 50%, #0a1a1a 100%);
+            animation: backgroundShift 10s ease-in-out infinite;
+        }
+
+        @keyframes backgroundShift {
+            0%, 100% { filter: hue-rotate(0deg); }
+            25% { filter: hue-rotate(90deg); }
+            50% { filter: hue-rotate(180deg); }
+            75% { filter: hue-rotate(270deg); }
+        }
+
+        .neon-line {
+            position: absolute;
+            background: linear-gradient(90deg, transparent, #ff00ff, #00ffff, #ff00ff, transparent);
+            box-shadow: 0 0 20px #ff00ff, 0 0 40px #00ffff, 0 0 60px #ff00ff;
+            animation: neonPulse 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes neonPulse {
+            0% {
+                box-shadow: 0 0 10px #ff00ff, 0 0 20px #00ffff, 0 0 30px #ff00ff;
+                opacity: 0.5;
+            }
+            100% {
+                box-shadow: 0 0 30px #ff00ff, 0 0 60px #00ffff, 0 0 90px #ff00ff;
+                opacity: 1;
+            }
+        }
+
+
+
+        .content {
+            position: relative;
+            z-index: 10;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: #ffffff;
+            text-align: center;
+        }
+
+        .neon-text {
+            font-family: 'Arial', sans-serif;
+            font-size: 4rem;
+            font-weight: bold;
+            color: #ffffff;
+            text-shadow: 0 0 10px #ff00ff, 0 0 20px #ff00ff, 0 0 30px #ff00ff, 0 0 40px #ff00ff;
+            animation: textGlow 2s ease-in-out infinite alternate;
+            letter-spacing: 3px;
+        }
+
+        @keyframes textGlow {
+            0% {
+                text-shadow: 0 0 10px #ff00ff, 0 0 20px #ff00ff, 0 0 30px #ff00ff;
+                color: #ff00ff;
+            }
+            100% {
+                text-shadow: 0 0 20px #00ffff, 0 0 30px #00ffff, 0 0 40px #00ffff, 0 0 50px #00ffff;
+                color: #00ffff;
+            }
+        }
+
+        .particles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: radial-gradient(circle, #ff00ff, transparent);
+            border-radius: 50%;
+            animation: float 6s linear infinite;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .neon-text {
+                font-size: 2.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="neon-container"></div>
+    
+    <div class="particles" id="particles"></div>
+    
+    <div class="content">
+        <h1 class="neon-text">NEON</h1>
+    </div>
+
+    <script>
+        // Create neon circles
+        function createNeonCircle() {
+            const circle = document.createElement('div');
+            circle.className = 'neon-circle';
+            
+            const size = Math.random() * 150 + 50;
+            circle.style.width = size + 'px';
+            circle.style.height = size + 'px';
+            circle.style.left = Math.random() * (window.innerWidth - size) + 'px';
+            circle.style.top = Math.random() * (window.innerHeight - size) + 'px';
+            circle.style.animationDelay = Math.random() * 4 + 's';
+            
+            document.body.appendChild(circle);
+            
+            setTimeout(() => {
+                circle.remove();
+            }, 12000);
+        }
+
+        // Create floating particles
+        function createParticle() {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            
+            particle.style.left = Math.random() * window.innerWidth + 'px';
+            particle.style.animationDuration = (Math.random() * 4 + 4) + 's';
+            particle.style.animationDelay = Math.random() * 2 + 's';
+            
+            const colors = ['#ff00ff', '#00ffff', '#ffff00', '#ff0080', '#80ff00'];
+            const color = colors[Math.floor(Math.random() * colors.length)];
+            particle.style.background = `radial-gradient(circle, ${color}, transparent)`;
+            particle.style.boxShadow = `0 0 10px ${color}`;
+            
+            document.getElementById('particles').appendChild(particle);
+            
+            setTimeout(() => {
+                particle.remove();
+            }, 8000);
+        }
+
+        // Initialize effects
+        function initEffects() {
+            // Create initial circles
+            for (let i = 0; i < 5; i++) {
+                setTimeout(createNeonCircle, i * 1500);
+            }
+            
+            // Continuous particle generation
+            setInterval(createParticle, 200);
+            
+            // Continuous circle generation
+            setInterval(createNeonCircle, 4000);
+        }
+
+        // Mouse interaction
+        document.addEventListener('mousemove', (e) => {
+            if (Math.random() < 0.1) {
+                const spark = document.createElement('div');
+                spark.style.position = 'absolute';
+                spark.style.left = e.clientX + 'px';
+                spark.style.top = e.clientY + 'px';
+                spark.style.width = '6px';
+                spark.style.height = '6px';
+                spark.style.background = 'radial-gradient(circle, #ffffff, #ff00ff)';
+                spark.style.borderRadius = '50%';
+                spark.style.pointerEvents = 'none';
+                spark.style.zIndex = '20';
+                spark.style.boxShadow = '0 0 15px #ff00ff';
+                spark.style.animation = 'sparkle 1s ease-out forwards';
+                
+                document.body.appendChild(spark);
+                
+                setTimeout(() => spark.remove(), 1000);
+            }
+        });
+
+        // Add sparkle animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes sparkle {
+                0% { transform: scale(0) rotate(0deg); opacity: 1; }
+                50% { transform: scale(1.5) rotate(180deg); opacity: 0.8; }
+                100% { transform: scale(0) rotate(360deg); opacity: 0; }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Start the effects
+        initEffects();
+
+        // Handle window resize
+        window.addEventListener('resize', () => {
+            // Clean up particles on resize
+            const particles = document.querySelectorAll('.particle');
+            particles.forEach(p => p.remove());
+        });
+    </script>
+</body>
 </html>
