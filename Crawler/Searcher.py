@@ -17,17 +17,16 @@ class Searcher:
         query:str
         """
         words = query.lower().split(" ")
-
-        max_score = 0
-        max_url = ""
         
         conn = sqlite3.connect("words.db")
         cursor = conn.cursor()
-        cursor.execute("SELECT * FROM words WHERE word='film'")
+        cursor.execute("SELECT * FROM words WHERE word=?", (words[-1],))
         print(cursor.fetchall())
-        #print([line[1] for line in cursor.fetchall()])
+        cursor.execute('SELECT * FROM words')
+        print(len(cursor.fetchall()))
         conn.close() 
         
+        url_scores = {}
         
         for word in words:
             conn = sqlite3.connect("words.db")
@@ -35,13 +34,13 @@ class Searcher:
             cursor.execute("SELECT containers FROM words WHERE word=?", (word,))
             urls = json.loads(cursor.fetchone()[0])
             for url in urls:
-                score = sum([self.keyword_searching_algorithm(w, url) for w in word])
-                if score >= max_score:
-                    max_score = score
-                    max_url = url
+                score = sum([self.keyword_searching_algorithm(w, url) for w in words])
+                url_scores[url] = score
             conn.close()
+        
+        sorted_scores = dict(sorted(url_scores.items(), key=lambda item: item[1], reverse=False))
 
-        return max_url
+        return sorted_scores
 
     def keyword_searching_algorithm(self, word, url):
         """Use words.db to assign a score to an url with the word"""
@@ -60,14 +59,18 @@ class Searcher:
             else:
                 tf = urls[url]
                 df = len(urls)
-        conn = sqlite3.connect("urls.db")
-        cursor = conn.cursor()
-        cursor.execute("SELECT * FROM urls")
-        N = len(cursor.fetchall())
-
-        conn.close()
-        return tf * math.log(N/df)
+        
+        with open("parameters.json", "r") as f:
+            N = json.load(f)["Index"]
+        
+        if df / N > 0.7:
+            return 0
+        
+        return tf * math.log(N / df) if df != 0 else 0
 
 if __name__ == "__main__":
     s = Searcher()
-    print(s.search("film"))
+    results = s.search("temps")
+
+    for url, score in results.items():
+        print(f"{url} → score: {score:.2f}")
