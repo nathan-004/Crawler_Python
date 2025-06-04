@@ -32,6 +32,7 @@ class Searcher:
             conn = sqlite3.connect("words.db")
             cursor = conn.cursor()
             cursor.execute("SELECT containers FROM words WHERE word=?", (word,))
+            
             urls = json.loads(cursor.fetchone()[0])
             for url in urls:
                 score = sum([self.keyword_searching_algorithm(w, url) for w in words])

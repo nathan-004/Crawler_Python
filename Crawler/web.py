@@ -339,7 +339,7 @@ class WebScrapping():
         """
 
         content = {}
-        exceptions = set(["comment", "script", "style", "link", "meta", "head", "a"])
+        exceptions = set(["comment", "script", "style", "link", "meta", "head"])
 
         for element in self.elements:
             if element[0] in exceptions:
@@ -468,6 +468,13 @@ if __name__ == "__main__":
     print(a.find_path("https://test-sites/test-sites"))
 
     print(a.get_content())
+
+    print(a.is_valide_url_format("https://test.test2.com/"))
+
+    print("-" * 50)
+    a = WebScrapping(url="https://fr.wikipedia.org/wiki/Portail:Programmation_informatique")
+    print(a.get_content())
+    print(a.find_balise("a"))
 
 # https://webscraper.io/test-sites
 # https://www.w3schools.com/html/tryit.asp?filename=tryhtml_intro

@@ -33,22 +33,59 @@ class Indexer:
         conn.close()
         
     def index_db(self, db_name="urls.db"):
-        """Make the database with every word"""
+        """Make the database with every word, commit every 50 urls"""
         sql = SQLStockage(db_name)
         donnees = sql.load_all_urls()[self.index:]
-        
+        buffer = []
+
         for line in donnees:
             self.index += 1
             url = line[0]
             words = json.loads(line[3])
             total = sum(words.values())
-            
-            for word in words:
-                self.add_word(word, url, words[word])
+            buffer.append((url, words))
+
+            if len(buffer) == 50:
+                self._commit_buffer(buffer)
+                buffer = []
+                print(self.index)
             
             self.parameters.save({"Index": self.index})
-            
+
+        # Commit any remaining urls in buffer
+        if buffer:
+            self._commit_buffer(buffer)
+            self.parameters.save({"Index": self.index})
+
         print(len(donnees))
+
+    def _commit_buffer(self, buffer):
+        """Ajoute les mots de 50 urls à la base de données en une fois (optimisé)"""
+        conn = sqlite3.connect(self.filename)
+        cursor = conn.cursor()
+        try:
+            for url, words in buffer:
+                for word, freq_word in words.items():
+                    cursor.execute("SELECT containers FROM words WHERE word=?", (word,))
+                    row = cursor.fetchone()
+                    if row is None:
+                        containers = json.dumps({url: freq_word})
+                        cursor.execute(
+                            "INSERT INTO words (word, containers) VALUES (?, ?)",
+                            (word, containers)
+                        )
+                    else:
+                        containers = json.loads(row[0])
+                        containers[url] = freq_word
+                        cursor.execute(
+                            "UPDATE words SET containers=? WHERE word=?",
+                            (json.dumps(containers), word)
+                        )
+            conn.commit()
+        except sqlite3.Error as e:
+            print(f"Erreur lors de l'insertion en lot: {e}")
+        finally:
+            conn.close()
     
     def get_line(self, word):
         """Retourne la ligne contenant le mot"""
@@ -58,53 +95,6 @@ class Indexer:
         rows = cursor.fetchone()
         conn.close()
         return rows
-    
-    def add_word(self, word, url, freq_word):
-        """
-        Ajoute une ligne pour le mot dans la base de données words.db si il n'existe pas sinon ajoute l'url dans la colonne containers
-        
-        Parameters
-        ----------
-        word:string
-        url:string
-        freq_word:float
-            Nombre de mots divisé par le total de mots dans la page
-        """
-        
-        line = self.get_line(word)
-        
-        if line is None:
-            freq_word = json.dumps({url : freq_word})
-            conn = sqlite3.connect(self.filename)
-            cursor = conn.cursor()
-            try:
-                cursor.execute('''
-                    INSERT OR IGNORE INTO words (word, containers)
-                    VALUES (?, ?)
-                ''', (word, freq_word))
-                conn.commit()
-            except sqlite3.Error as e:
-                print(f"Erreur lors de l'insertion: {e}")
-            finally:
-                conn.close()
-        else:
-            line = list(line)
-            line[2] = json.loads(line[2])
-            conn = sqlite3.connect(self.filename)
-            cursor = conn.cursor()
-            line[2][url] = freq_word
-            containers = json.dumps(line[2])
-            try:
-                cursor.execute('''
-                    UPDATE words
-                    SET containers = ?
-                    WHERE word=?
-                ''', (containers, word))
-                conn.commit()
-            except sqlite3.Error as e:
-                print(f"Erreur lors de l'insertion: {e}")
-            finally:
-                conn.close()
             
 if __name__ == "__main__":
     idx = Indexer()
