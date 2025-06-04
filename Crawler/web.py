@@ -339,7 +339,7 @@ class WebScrapping():
         """
 
         content = {}
-        exceptions = set(["comment", "script", "style", "link", "meta", "head"])
+        exceptions = set(["comment", "script", "style", "link", "meta", "head", "a"])
 
         for element in self.elements:
             if element[0] in exceptions:
