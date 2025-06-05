@@ -15,5 +15,5 @@ Utilise [web.py](web.py) pour modifier [database.json](database.json).
 
 #### Ressources
 
-Exemple code : [mwmbl](https://github.com/mwmbl/mwmbl)
+Exemple code : [mwmbl](https://github.com/mwmbl/mwmbl)  
 Papier : [Google](http://infolab.stanford.edu/pub/papers/google.pdf)
