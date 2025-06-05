@@ -2,6 +2,17 @@ import math
 import sqlite3
 import json
 
+
+def prod(liste):
+    res = liste[0]
+    
+    for n in liste[1:]:
+        if n == 0:
+            n = 0.1
+        res = res * n
+    
+    return res
+
 class Searcher:
     """Find the most relevant urls from an input"""
 
@@ -35,7 +46,7 @@ class Searcher:
             
             urls = json.loads(cursor.fetchone()[0])
             for url in urls:
-                score = sum([self.keyword_searching_algorithm(w, url) for w in words])
+                score = prod([self.keyword_searching_algorithm(w, url) for w in words])
                 url_scores[url] = score
             conn.close()
         
@@ -71,7 +82,7 @@ class Searcher:
 
 if __name__ == "__main__":
     s = Searcher()
-    results = s.search("temps")
+    results = s.search("le test")
 
     for url, score in results.items():
-        print(f"{url} → score: {score:.2f}")
+        print(f"{url} → score: {score}")
