@@ -1,5 +1,6 @@
 from web import WebScrapping, Stack, RobotFileParser
 from stockage import JSONStockage, TXTStockage, SQLStockage
+from indexer import Indexer
 
 import time
 
@@ -61,6 +62,11 @@ class Crawler():
                     word_freq=self.web.get_content(),
                     is_valid=True,
                 )
+                
+                # Indexer
+                ind = Indexer()
+                ind.index_db()
+                
                 balises = self.web.find_balise("a")
                 if debug:
                     end_web_scrap = time.time()
