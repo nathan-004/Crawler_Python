@@ -55,7 +55,9 @@ body {
 	position: relative;
 	z-index: 10;
 	display: flex;
+	flex-direction: column;
 	justify-content: center;
+	gap: 15px;
 	align-items: center;
 	height: 100vh;
 	color: #ffffff;
@@ -121,4 +123,25 @@ body {
 	.neon-text {
 		font-size: 2.5rem;
 	}
+}
+
+#search_query {
+	width: 50rem;
+	height: 3rem;
+	padding: 5px;
+	border-radius: 0.5%;
+	z-index: 1;
+	border: none;
+	background-color: rgba(255, 255, 255, 0.1);
+	text-align: center;
+	color: white;
+	filter: blur(0.5px);
+}
+
+#search_query:focus {
+	border-width: 3px; 
+	border-style: solid;
+	border-image: linear-gradient(to right, #11998e,#38ef7d);
+	border-image-slice: 1;
+	margin: 0;
 }
