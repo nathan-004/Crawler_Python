@@ -13,3 +13,11 @@ lines = cursor.fetchall()
 conn.close()
 
 print(len(lines))
+
+conn = sqlite3.connect("words.db")
+cursor = conn.cursor()
+cursor.execute("SELECT * FROM words")
+lines = cursor.fetchall()
+conn.close()
+
+print(len(lines))
