@@ -82,7 +82,7 @@ class Searcher:
 
 if __name__ == "__main__":
     s = Searcher()
-    results = s.search("le test")
+    results = s.search("")
 
     for url, score in results.items():
         print(f"{url} → score: {score}")

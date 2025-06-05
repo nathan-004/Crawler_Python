@@ -19,7 +19,11 @@ class Crawler():
         if self.stack.is_empty():
             self.stack.push(self.url)
         self.stack.push(self.url)  # Utiliser self.stack
-        visited = set()
+        urls = self.sql_stockage.get_urls()
+        if urls is None:
+            visited = set()
+        else:
+            visited = set(urls)
         self.json_stockage = JSONStockage("urls.json")
 
         robot_parser = RobotFileParser()

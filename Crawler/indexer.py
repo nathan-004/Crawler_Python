@@ -57,7 +57,8 @@ class Indexer:
             self._commit_buffer(buffer)
             self.parameters.save({"Index": self.index})
 
-        print(len(donnees))
+        if len(donnees) != 0:
+            print(len(donnees))
 
     def _commit_buffer(self, buffer):
         """Ajoute les mots de 50 urls à la base de données en une fois (optimisé)"""

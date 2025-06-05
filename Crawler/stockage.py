@@ -5,7 +5,7 @@ import sqlite3
 class SQLStockage:
     """Classe de stockage pour les données SQL."""
 
-    N = 100
+    N = 50
 
     def __init__(self, db_name):
         """
@@ -82,6 +82,14 @@ class SQLStockage:
         rows = cursor.fetchall()
         conn.close()
         return rows
+    
+    def get_urls(self):
+        conn = sqlite3.connect(self.db_name)
+        cursor = conn.cursor()
+        cursor.execute("SELECT url FROM urls")
+        rows = cursor.fetchall()
+        conn.close()
+        return [row[0] for row in rows]
 
 class JSONStockage:
     """
