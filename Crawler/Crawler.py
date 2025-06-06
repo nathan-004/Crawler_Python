@@ -62,7 +62,7 @@ class Crawler():
                 self.sql_stockage.append_url(
                     url = url,
                     domain=self.web.find_domain(url),
-                    title=self.web.find_balise("title")[0][2],
+                    title=self.web.find_balise("title")[0][2] if self.web.find_balise("title") != [] else "",
                     word_freq=self.web.get_content(),
                     is_valid=True,
                 )
@@ -141,7 +141,8 @@ if __name__ == "__main__":
     crawler = Crawler(start_url)
     try:
         crawler.crawl_bfs()
-    except KeyboardInterrupt:
+    except KeyboardInterrupt as e:
+        print(e)
         text_stockage = TXTStockage("urls_stack.txt")
         print("Sauvegarde de la pile dans le fichier urls_stack.txt")
         text_stockage.save(crawler.stack.stack_to_string())

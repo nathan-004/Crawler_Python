@@ -1,10 +1,7 @@
 import json
 import sqlite3
 
-with open("urls.json", "r") as f:
-    a = json.load(f)
 
-print("200ème élément", list(a.keys())[200], sep=" : ")
 
 conn = sqlite3.connect("urls.db")
 cursor = conn.cursor()

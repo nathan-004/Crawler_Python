@@ -1,4 +1,8 @@
 from Searcher import Searcher
-import flask
+from flask import Flask
 
-# A continuer
+app = Flask(__name__)
+
+@app.rout("/")
+def get_results():
+    pass
