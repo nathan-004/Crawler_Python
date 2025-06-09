@@ -4,8 +4,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Resultats</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/search.css') }}">
 </head>
 <body>
-    
+    <div class="background"></div>
+    <main>
+        <section class="top-container">
+
+        </section>
+
+        <section class="results-container">
+            {% for item in results %}
+                <li>{{ item }}</li>
+            {% endfor %}
+        </section>
+
+        <section class="bottom-container">
+            
+        </section>
+    </main>
 </body>
 </html>
