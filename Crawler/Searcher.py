@@ -33,8 +33,8 @@ class Searcher:
         cursor = conn.cursor()
         cursor.execute("SELECT * FROM words WHERE word=?", (words[-1],))
         print(cursor.fetchall())
-        cursor.execute('SELECT * FROM words')
-        print(len(cursor.fetchall()))
+        cursor.execute('SELECT COUNT(*) FROM words')
+        print(cursor.fetchall())
         conn.close() 
         
         url_scores = {}
@@ -50,7 +50,7 @@ class Searcher:
                 url_scores[url] = score
             conn.close()
         
-        sorted_scores = dict(sorted(url_scores.items(), key=lambda item: item[1], reverse=False))
+        sorted_scores = dict(sorted(url_scores.items(), key=lambda item: item[1], reverse=True))
 
         return sorted_scores
 
