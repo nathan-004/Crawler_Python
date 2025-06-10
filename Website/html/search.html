@@ -10,12 +10,14 @@
     <div class="background"></div>
     <main>
         <section class="top-container">
-
+            <form action="http://localhost:5000/search" method="get">
+  				<input type="text" id="search_query" name="q" placeholder="Rechercher" />
+			</form>
         </section>
 
         <section class="results-container">
             {% for item in results %}
-                <li>{{ item }}</li>
+                <a href={{ item }} target="_blank">{{ item }}</a>
             {% endfor %}
         </section>
 
