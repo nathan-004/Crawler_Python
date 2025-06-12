@@ -2,6 +2,16 @@ import json
 import time
 import sqlite3
 
+def get_domains_list():
+    """Retourne la liste de 1 million de domaines contenu dans top-1m.csv"""
+    domains = []
+    with open("top-1m.csv", "r", encoding="utf-8") as f:
+        for line in f:
+            parts = line.strip().split(",")
+            if len(parts) == 2:
+                domains.append("https://" + parts[1])
+    return domains
+
 class SQLStockage:
     """Classe de stockage pour les données SQL."""
 
@@ -236,3 +246,4 @@ if __name__ == "__main__":
     JSONStockage("urls.json").reset()
     TXTStockage("urls_stack.txt").reset()
     TXTStockage("logs.txt").reset()
+    print(get_domains_list()[:100])

@@ -1,11 +1,11 @@
 from web import WebScrapping, Stack, RobotFileParser
-from stockage import JSONStockage, TXTStockage, SQLStockage
+from stockage import JSONStockage, TXTStockage, SQLStockage, get_domains_list
 from indexer import Indexer
 
 import time
 
 class Crawler():
-    def __init__(self, start_url):
+    def __init__(self, start_url=None):
         self.url = start_url
         self.web = WebScrapping(url=self.url)
         self.stack = Stack()  # Déplacer la pile ici
@@ -17,8 +17,10 @@ class Crawler():
         """
         self.stack.string_to_stack(TXTStockage("urls_stack.txt").load())
         if self.stack.is_empty():
-            self.stack.push(self.url)
-        self.stack.push(self.url)  # Utiliser self.stack
+            if self.url:
+                self.stack.push(self.url)
+            else:
+                self.stack.stack  = get_domains_list().copy()
         urls = self.sql_stockage.get_urls()
         if urls is None:
             visited = set()
@@ -134,14 +136,14 @@ class Crawler():
 
 
 if __name__ == "__main__":
-    start_url = "https://fr.wikipedia.org/wiki/Test"
+    start_url = None #"https://fr.wikipedia.org/wiki/Test"
     logs = TXTStockage("logs.txt")
     logs.append(f"Début du scraping, url de départ : {start_url}", timestamp=True)
 
     crawler = Crawler(start_url)
     try:
         crawler.crawl_bfs()
-    except KeyboardInterrupt as e:
+    except Exception as e:
         print(e)
         text_stockage = TXTStockage("urls_stack.txt")
         print("Sauvegarde de la pile dans le fichier urls_stack.txt")
