@@ -3,6 +3,7 @@ from stockage import TXTStockage
 import requests
 from urllib.parse import urlparse
 import re
+import asyncio
 
 def remove_extra_whitespaces(text):
     """
@@ -12,9 +13,18 @@ def remove_extra_whitespaces(text):
 
 
 class WebScrapping():
+
+    TIMEOUT = 500
+    ERROR_CODES = {
+        403: "Forbidden",
+        405: "Method Not Allowed",
+        429: "Too Many Requests",
+        404: "Not Found",
+    }
+
     def __init__(self, url="", languages=["en", "fr", None]):
         self.url = url
-        if url != "":
+        if url != "" and url is not None:
             self.elements = self.get_html_elements()
         self.file_exceptions = [
             "zip",
@@ -255,7 +265,7 @@ class WebScrapping():
             return False
 
         try:
-            response = requests.head(url, timeout=5000, allow_redirects=True) # Timeout de 5 secondes
+            response = requests.head(url, timeout=self.TIMEOUT, allow_redirects=True) # Timeout de 5 secondes
             lang = response.headers['Content-language'] if 'Content-language' in response.headers else None
 
             if response.status_code == 200:
@@ -267,14 +277,16 @@ class WebScrapping():
                     self.not_validate_urls.add(url)
                     return False
             else:
-                self.not_validate_urls.add(url)
-                print(f"Response: {response.status_code}")
+                if response.status_code not in [429]:
+                    self.not_validate_urls.add(url)
+                print(f"Response: {response.status_code} {self.ERROR_CODES[response.status_code] if response.status_code in self.ERROR_CODES else None} | URL : {url}")
                 return False
-        except requests.exceptions.RequestException:
+        except requests.exceptions.RequestException as e:
             # Prend en charge :
             # - ChunkedEncodingError
             # - ConnectionError, Timeout, TooManyRedirects…
             self.logs.append(f"Error: {url}", timestamp=True)
+            print(e)
             return False
         
     def is_valide_url_format(self, url:str):
@@ -286,11 +298,10 @@ class WebScrapping():
         elif url in self.not_validate_urls:
             return False
 
-        parsed = urlparse(url)
-        if parsed.scheme in ("http", "https") and parsed.netloc:
+        if url.startswith("http") or url.startswith("https"):
             return True
         else:
-            #self.not_validate_urls.add(url)
+            self.not_validate_urls.add(url)
             return False
         
     def find_domain(self, url:str):
@@ -451,6 +462,8 @@ class Stack():
                     self.push(eval(i))
                 except SyntaxError:
                     self.push(i)
+                except NameError:
+                    self.push(i)
 
 if __name__ == "__main__":
     a = WebScrapping(url="https://webscraper.io/test-sites")
@@ -475,6 +488,8 @@ if __name__ == "__main__":
     a = WebScrapping(url="https://fr.wikipedia.org/wiki/Portail:Programmation_informatique")
     print(a.get_content())
     print(a.find_balise("a"))
+
+    print(a.is_valid_url("https://indeed.com"))
 
 # https://webscraper.io/test-sites
 # https://www.w3schools.com/html/tryit.asp?filename=tryhtml_intro

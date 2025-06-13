@@ -142,7 +142,7 @@ if __name__ == "__main__":
 
     crawler = Crawler(start_url)
     try:
-        crawler.crawl_bfs()
+        crawler.crawl_bfs(debug=True)
     except Exception as e:
         print(e)
         text_stockage = TXTStockage("urls_stack.txt")
