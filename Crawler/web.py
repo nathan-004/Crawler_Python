@@ -14,7 +14,7 @@ def remove_extra_whitespaces(text):
 
 class WebScrapping():
 
-    TIMEOUT = 500
+    TIMEOUT = 5 # En secondes
     ERROR_CODES = {
         403: "Forbidden",
         405: "Method Not Allowed",
