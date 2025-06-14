@@ -20,7 +20,8 @@ class Crawler():
             if self.url:
                 self.stack.push(self.url)
             else:
-                self.stack.stack  = get_domains_list().copy()
+                self.stack.clear()
+                self.stack.extend(get_domains_list())
         urls = self.sql_stockage.get_urls()
         if urls is None:
             visited = set()
@@ -115,7 +116,7 @@ class Crawler():
 
                     if debug:
                         start = time.time()
-                    if new_url not in visited and self.web.is_valide_url_format(new_url) and new_url not in self.stack.stack:
+                    if new_url not in visited and self.web.is_valide_url_format(new_url) and new_url not in self.stack.set:
                         self.stack.push(new_url)  # Utiliser self.stack
                     valid_urls.append(new_url)
                     if debug:
@@ -124,7 +125,7 @@ class Crawler():
 
                 if debug:
                     end_link = time.time()
-                    print(f"Links processed in {end_link - start_link:.2f} seconds")
+                    print(f" {len(balises)} Links processed in {end_link - start_link:.2f} seconds")
 
                 # Ajouter les données à sauvegarder
                 if debug:
@@ -133,6 +134,8 @@ class Crawler():
                 if debug:
                     end_json = time.time()
                     print(f"Data saved in JSON in {end_json - start_json:.2f} seconds")
+            else:
+                print(f"{url} déjà visité")
 
 
 if __name__ == "__main__":

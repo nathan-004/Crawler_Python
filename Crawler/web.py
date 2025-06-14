@@ -20,6 +20,10 @@ class WebScrapping():
         405: "Method Not Allowed",
         429: "Too Many Requests",
         404: "Not Found",
+        501: "Not Implemented",
+        503: "Service Unavailable",
+        440: "Login Time-out",
+        418: "I'm a teapot",
     }
 
     def __init__(self, url="", languages=["en", "fr", None]):
@@ -422,48 +426,54 @@ class RobotFileParser():
                     return False
         return True
 
-class Stack():
+class Stack(list):
+
     def __init__(self):
-        self.stack = []
+        super().__init__()
+        self.set = set()
 
     def push(self, item):
-        self.stack.append(item)
+        if isinstance(item, list):
+            for i in item:
+                self.append_unique(i)
+        else:
+            self.append_unique(item)
+
+    def append_unique(self, item):
+        if item not in self.set:
+            self.append(item)
+            self.set.add(item)
 
     def pop(self, index=-1):
         if not self.is_empty():
-            return self.stack.pop(index)
+            item = super().pop(index)
+            self.set.discard(item)
+            return item
         else:
             raise Exception("Stack is empty")
-        
-    def last_balise(self, balise_name):
-        # Find the last balise in the stack with the same name
-        for i in range(len(self.stack)-1, -1, -1):
-            if self.stack[i][0] == balise_name:
-                return self.pop(i)
-        return None
 
     def is_empty(self):
-        return len(self.stack) == 0
-    
+        return len(self) == 0
+
     def stack_to_string(self):
-        """
-        Retourne la pile sous forme de chaîne de caractères
-        """
-        return "\n".join([str(i) for i in self.stack])
-    
+        return "\n".join([str(i) for i in self])
+
     def string_to_stack(self, string):
-        """
-        Remplit la pile à partir d'une chaîne de caractères
-        """
-        self.stack = []
+        self.clear()
+        self.set.clear()
         for i in string.split("\n"):
             if i != "":
                 try:
                     self.push(eval(i))
-                except SyntaxError:
+                except (SyntaxError, NameError):
                     self.push(i)
-                except NameError:
-                    self.push(i)
+
+    def last_balise(self, balise_name):
+        # Trouve et retire la dernière balise du nom donné
+        for i in range(len(self)-1, -1, -1):
+            if self[i][0] == balise_name:
+                return super().pop(i)
+        return None
 
 if __name__ == "__main__":
     a = WebScrapping(url="https://webscraper.io/test-sites")
