@@ -1,17 +1,18 @@
-## Projet de Crawler en Python
+# Moteur de recherche
 
-#### But :
+- [Crawler](#crawler)
+  - [Fonctionnement](#fonctionnement-crawler)
+- [Website](#website)
 
-Parcourir un maximum de pages web afin de les stocker dans [database.json](database.json) avec leur contenu.
+## Crawler
 
-#### [WEB](web.py)
-[Web Scrapping](https://fr.wikipedia.org/wiki/Web_scraping)
+A partir d'une url de base ou du contenu de [urls_stack](https://github.com/nathan-004/search-engine/blob/main/Crawler/urls_stack.txt), explore le web et enregistre le contenu dans des bases de données.
 
-Permet de parcourir une page web et d'en trouver des élément.
+### Fonctionnement Crawler
 
-#### [Crawler](https://github.com/nathan-004/Crawler_Python/blob/main/Crawler%20(2).py)
 
-Utilise [web.py](web.py) pour modifier [database.json](database.json).
+
+## Website
 
 #### Ressources
 
