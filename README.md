@@ -78,7 +78,7 @@ Les mots très fréquents comme "le", "la", etc., sont filtrés ou réduits en s
 
 Base de données locale, non adaptée à un usage en production sans adaptation.
 
-## 🔧 Technologies utilisées
+## Technologies utilisées
 
 - Python
 - Flask
