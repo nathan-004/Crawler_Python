@@ -71,19 +71,15 @@ http://127.0.0.1:5000
 
 ## Utilisation
 
-Entrez un mot-clé dans la barre de recherche.
-
-Le backend utilise un algorithme TF-IDF pour noter chaque page contenant ces mots.
-
-Les scores élevés indiquent une plus grande pertinence.
+- Entrez un mot-clé dans la barre de recherche.
+- Le backend utilise un algorithme TF-IDF pour noter chaque page contenant ces mots.
+- Les scores élevés indiquent une plus grande pertinence.
 
 ## Limitations
 
-Beaucoup d'URLs très populaires bloquent le crawl via erreur 403 Forbidden.
-
-Les mots très fréquents comme "le", "la", etc., sont filtrés ou réduits en score.
-
-Base de données locale, non adaptée à un usage en production sans adaptation.
+- Beaucoup d'URLs très populaires bloquent le crawl via erreur 403 Forbidden.
+- Les mots très fréquents comme "le", "la", etc., sont filtrés ou réduits en score.
+- Base de données locale, non adaptée à un usage en production sans adaptation.
 
 ## Technologies utilisées
 
