@@ -3,7 +3,6 @@ from stockage import TXTStockage
 import requests
 from urllib.parse import urlparse
 import re
-import asyncio
 
 def remove_extra_whitespaces(text):
     """
@@ -11,6 +10,19 @@ def remove_extra_whitespaces(text):
     """
     return re.sub(r'\s{2,}', ' ', text).strip()  # Replace 2 or more spaces with a single space
 
+def get_headers():
+    return {
+        'User-Agent': "SeekrBot/1.0 (https://github.com/nathan-004/search-engine)",
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+        'Accept-Language': 'fr-FR,fr;q=0.9,en;q=0.8',
+        'Accept-Encoding': 'gzip, deflate, br',
+        'Connection': 'keep-alive',
+        'Upgrade-Insecure-Requests': '1',
+        'Sec-Fetch-Dest': 'document',
+        'Sec-Fetch-Mode': 'navigate',
+        'Sec-Fetch-Site': 'none',
+        'Cache-Control': 'max-age=0'
+    }
 
 class WebScrapping():
 
@@ -60,7 +72,7 @@ class WebScrapping():
             url = self.url
 
         if url != "":
-            response = requests.get(self.url)
+            response = requests.get(self.url, headers=get_headers())
         
             if response.status_code != 200:
                 raise Exception(f"Failed to load page: {response.status_code}")
@@ -269,7 +281,7 @@ class WebScrapping():
             return False
 
         try:
-            response = requests.head(url, timeout=self.TIMEOUT, allow_redirects=True) # Timeout de 5 secondes
+            response = requests.head(url, timeout=self.TIMEOUT, allow_redirects=True, headers=get_headers()) # Timeout de 5 secondes
             lang = response.headers['Content-language'] if 'Content-language' in response.headers else None
 
             if response.status_code == 200:
