@@ -228,7 +228,7 @@ class TXTStockage:
             timestamp = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
             data = f"{timestamp} - {data}"
         try:
-            with open(self.filename, 'a') as file:
+            with open(self.filename, 'a', encoding="utf-8") as file:
                 file.write(data + "\n")
         except Exception as e:
             print(e)
