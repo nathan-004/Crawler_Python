@@ -38,10 +38,13 @@ class WebScrapping():
         418: "I'm a teapot",
     }
 
+    BALISES_EXCEPTIONS = set([
+        "script",
+        "style"
+    ])
+
     def __init__(self, url="", languages=["en", "fr", None]):
         self.url = url
-        if url != "" and url is not None:
-            self.elements = self.get_html_elements()
         self.file_exceptions = [
             "zip",
             "pdf",
@@ -52,6 +55,9 @@ class WebScrapping():
         self.not_validate_urls = set()
 
         self.languages = set(languages)
+
+        if url != "" and url is not None:
+            self.elements = self.get_html_elements()
 
     def get_html_elements(self, url=None, html_text=None):
         """
@@ -87,6 +93,7 @@ class WebScrapping():
         current_end = "" # Nom de la balise fermante
         stack = Stack()
         comment = ""
+        current_balise = ""
 
         for idx, char in enumerate(html_text):
             if char == "\n":
@@ -99,6 +106,7 @@ class WebScrapping():
                     if html_text[idx+1] == "!":
                         state = "inside_comment"
                     elif html_text[idx+1] == "/":
+                        print(idx, html_text[idx-10:idx+10])
                         state = "inside_close"
                         current_end = ""
                     else:
@@ -109,7 +117,14 @@ class WebScrapping():
 
             elif state == "inside_open":
                 if char == ">":
-                    stack.push((current_start.split()[0], "".join(current_start.split()[1:]))) # Ajouter la balise à la pile
+                    if current_start and current_start.strip():
+                        parts = current_start.strip().split()
+                        tag_name = parts[0]
+                        tag_attrs = "".join(parts[1:]) if len(parts) > 1 else ""
+                        stack.push((tag_name, tag_attrs))
+                        current_balise = tag_name
+                    else:
+                        print(f"Erreur, Current start n'est pas présent")
                     state = "inside_content"
                     current_start = ""
                 else:
@@ -132,7 +147,11 @@ class WebScrapping():
                         current_end += char
 
             elif state == "inside_content":
-                if char == "<":
+                if current_balise in self.BALISES_EXCEPTIONS: # Gérer les balises comme script ou style
+                    if char == "<":
+                        if html_text[idx+2:idx+2+len(current_balise)] == current_balise:
+                            state = "inside_close"
+                elif char == "<":
                     if html_text[idx+1] == "/":
                         state = "inside_close"
                     elif html_text[idx+1] == "!":
@@ -488,10 +507,11 @@ class Stack(list):
         return None
 
 if __name__ == "__main__":
-    a = WebScrapping(url="https://webscraper.io/test-sites")
+    a = WebScrapping(url="https://bloomberg.com")
 
-    # print(a.find_balise("a"))
+    
 
+    """
     print(a.urljoin("https://webscraper.io/test-sites/test2", "/test-sites3"))
     print(a.urljoin("https://webscraper.io/test-sites", "../test-sites"))
     print(a.urljoin("https://webscraper.io/test-sites", "https://test-sites/test-sites"))
@@ -512,6 +532,7 @@ if __name__ == "__main__":
     print(a.find_balise("a"))
 
     print(a.is_valid_url("https://indeed.com"))
+    """
 
 # https://webscraper.io/test-sites
 # https://www.w3schools.com/html/tryit.asp?filename=tryhtml_intro

@@ -146,7 +146,7 @@ if __name__ == "__main__":
     crawler = Crawler(start_url)
     try:
         crawler.crawl_bfs(debug=False)
-    except Exception as e:
+    except KeyboardInterrupt as e:
         print(e)
         text_stockage = TXTStockage("urls_stack.txt")
         print("Sauvegarde de la pile dans le fichier urls_stack.txt")
