@@ -39,6 +39,7 @@ class SQLStockage:
                 domain TEXT,
                 title TEXT,
                 word_freq TEXT,
+                links TEXT,
                 date_scraped DATETIME,
                 is_valid BOOLEAN
             );
@@ -46,7 +47,7 @@ class SQLStockage:
         conn.commit()
         conn.close()
 
-    def save_url(self, url, domain=None, title=None, word_freq=None, is_valid=True, timestamp=None):
+    def save_url(self, url, domain=None, title=None, word_freq=None, links=None,is_valid=True, timestamp=None):
         """
         Sauvegarde une URL avec ses métadonnées dans la base.
 
@@ -57,20 +58,22 @@ class SQLStockage:
         """
         date_scraped = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()) if timestamp is not None else timestamp
         word_freq = json.dumps(word_freq)
+        links = json.dumps(links)
+
         conn = sqlite3.connect(self.db_name)
         cursor = conn.cursor()
         try:
             cursor.execute('''
-                INSERT OR IGNORE INTO urls (url, domain, title, word_freq, date_scraped, is_valid)
-                VALUES (?, ?, ?, ?, ?, ?)
-            ''', (url, domain, title, word_freq, date_scraped, is_valid))
+                INSERT OR IGNORE INTO urls (url, domain, title, word_freq, links, date_scraped, is_valid)
+                VALUES (?, ?, ?, ?, ?, ?, ?)
+            ''', (url, domain, title, word_freq, links, date_scraped, is_valid))
             conn.commit()
         except sqlite3.Error as e:
             print(f"Erreur lors de l'insertion: {e}")
         finally:
             conn.close()
 
-    def append_url(self, url, domain=None, title=None, word_freq=None, is_valid=None):
+    def append_url(self, url, domain=None, title=None, word_freq=None, links = None, is_valid=None):
         """
         Stocke les valeurs dans une liste et tous les 100 urls, sauvegarde tout
         """
@@ -80,7 +83,7 @@ class SQLStockage:
                 self.save_url(*line)
             self.to_save.clear()
         else:
-            self.to_save.append([url, domain, title, word_freq, is_valid, time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())])
+            self.to_save.append([url, domain, title, word_freq, links, is_valid, time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())])
 
     def load_all_urls(self):
         """
@@ -246,4 +249,5 @@ if __name__ == "__main__":
     JSONStockage("urls.json").reset()
     TXTStockage("urls_stack.txt").reset()
     TXTStockage("logs.txt").reset()
+    JSONStockage("parameters.json").reset()
     print(get_domains_list()[:100])

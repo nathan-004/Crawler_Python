@@ -24,6 +24,9 @@ def get_headers():
         'Cache-Control': 'max-age=0'
     }
 
+class LoadError(Exception):
+    pass
+
 class WebScrapping():
 
     TIMEOUT = 5 # En secondes
@@ -43,7 +46,7 @@ class WebScrapping():
         "style"
     ])
 
-    def __init__(self, url="", languages=["en", "fr", None]):
+    def __init__(self, url="", languages=["en", "fr", "en-US", "en-GB", "fr-FR", None]):
         self.url = url
         self.file_exceptions = [
             "zip",
@@ -81,7 +84,7 @@ class WebScrapping():
             response = requests.get(self.url, headers=get_headers())
         
             if response.status_code != 200:
-                raise Exception(f"Failed to load page: {response.status_code}")
+                raise LoadError(f"Failed to load page: {response.status_code}")
         
         if html_text is None:
             html_text = response.text

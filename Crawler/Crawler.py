@@ -1,4 +1,4 @@
-from web import WebScrapping, Stack, RobotFileParser
+from web import WebScrapping, Stack, RobotFileParser, LoadError
 from stockage import JSONStockage, TXTStockage, SQLStockage, get_domains_list
 from indexer import Indexer
 
@@ -61,20 +61,27 @@ class Crawler():
 
                 if debug:
                     start_web_scrap = time.time()
-                self.web.elements = self.web.get_html_elements()
-                self.sql_stockage.append_url(
-                    url = url,
-                    domain=self.web.find_domain(url),
-                    title=self.web.find_balise("title")[0][2] if self.web.find_balise("title") != [] else "",
-                    word_freq=self.web.get_content(),
-                    is_valid=True,
-                )
-                
+                try:
+                    self.web.elements = self.web.get_html_elements()
+                except LoadError as l:
+                    print(l)
+                    continue
+
                 # Indexer
                 ind = Indexer()
                 ind.index_db()
                 
                 balises = self.web.find_balise("a")
+
+                self.sql_stockage.append_url(
+                    url = url,
+                    domain=self.web.find_domain(url),
+                    title=self.web.find_balise("title")[0][2] if self.web.find_balise("title") != [] else "",
+                    word_freq=self.web.get_content(),
+                    links = balises,
+                    is_valid=True,
+                )
+
                 if debug:
                     end_web_scrap = time.time()
                     print(f"Web scraping done in {end_web_scrap - start_web_scrap:.2f} seconds")
