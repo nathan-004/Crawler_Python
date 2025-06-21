@@ -1,6 +1,7 @@
 from web import WebScrapping, Stack, RobotFileParser, LoadError
 from stockage import JSONStockage, TXTStockage, SQLStockage, get_domains_list
 from indexer import Indexer
+from display import ColorDisplay
 
 import time
 
@@ -15,6 +16,8 @@ class Crawler():
         """
         Parcours en largeur (BFS) du site web à partir de l'URL de départ.
         """
+        console = ColorDisplay()
+
         self.stack.string_to_stack(TXTStockage("urls_stack.txt").load())
         if self.stack.is_empty():
             if self.url:
@@ -35,7 +38,7 @@ class Crawler():
             url = self.stack.pop(0)  # Utiliser self.stack
 
             if not self.web.is_valid_url(url):
-                print(f"Invalid URL : {url}")
+                console.error(f"Invalid URL : {url}")
                 logs.append(f"Invalid URL : {url}", timestamp=True)
                 continue
 
@@ -47,7 +50,7 @@ class Crawler():
 
                 robot_parser.parse(url)
                 if not robot_parser.is_allowed(url):
-                    print(f"Blocked by robots.txt: {url}")
+                    console.warning(f"Blocked by robots.txt: {url}")
                     logs.append(f"Blocked by robots.txt: {url}", timestamp=True)
                     continue
                 
@@ -55,7 +58,7 @@ class Crawler():
                     end_robot = time.time()
                     print(f"Robot file parsed in {end_robot - start_robot:.2f} seconds")
                 
-                print("Visiting:", url)
+                console.log(f"Visiting : {url}")
                 logs.append(f"Visiting : {url}", timestamp=True)
                 self.web.url = url
 
@@ -64,7 +67,7 @@ class Crawler():
                 try:
                     self.web.elements = self.web.get_html_elements()
                 except LoadError as l:
-                    print(l)
+                    console.warning(l)
                     continue
 
                 # Indexer
@@ -142,7 +145,7 @@ class Crawler():
                     end_json = time.time()
                     print(f"Data saved in JSON in {end_json - start_json:.2f} seconds")
             else:
-                print(f"{url} déjà visité")
+                console.warning(f"{url} déjà visité")
 
 
 if __name__ == "__main__":
@@ -153,8 +156,8 @@ if __name__ == "__main__":
     crawler = Crawler(start_url)
     try:
         crawler.crawl_bfs(debug=False)
-    except KeyboardInterrupt as e:
-        print(e)
+    except Exception as e:
+        ColorDisplay().error(e)
         text_stockage = TXTStockage("urls_stack.txt")
         print("Sauvegarde de la pile dans le fichier urls_stack.txt")
         text_stockage.save(crawler.stack.stack_to_string())

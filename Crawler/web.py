@@ -1,4 +1,5 @@
 from stockage import TXTStockage
+from display import ColorDisplay
 
 import requests
 from urllib.parse import urlparse
@@ -53,6 +54,7 @@ class WebScrapping():
             "pdf",
         ]
         self.logs = TXTStockage("logs.txt")
+        self.console = ColorDisplay()
 
         self.validate_urls = set()
         self.not_validate_urls = set()
@@ -109,7 +111,6 @@ class WebScrapping():
                     if html_text[idx+1] == "!":
                         state = "inside_comment"
                     elif html_text[idx+1] == "/":
-                        print(idx, html_text[idx-10:idx+10])
                         state = "inside_close"
                         current_end = ""
                     else:
@@ -127,7 +128,7 @@ class WebScrapping():
                         stack.push((tag_name, tag_attrs))
                         current_balise = tag_name
                     else:
-                        print(f"Erreur, Current start n'est pas présent")
+                        self.console.warning(f"Erreur, Current start n'est pas présent")
                     state = "inside_content"
                     current_start = ""
                 else:
@@ -138,7 +139,7 @@ class WebScrapping():
                     try:
                         elements.append((*self.get_arguments(stack.last_balise(current_end)), current_content))
                     except TypeError as e:
-                        print(f"Error: {e}, Current character : {idx}, Current page : {url}, Current start: {current_start}, Current end: {current_end}")
+                        self.console.warning(f"Error: {e}, Current character : {idx}, Current page : {url}, Current start: {current_start}, Current end: {current_end}")
                         self.logs.append(f"Error: {e}, Current character : {idx}, Current page : {url}, Current start: {current_start}, Current end: {current_end}", timestamp=True)
                         pass
                     state = "outside"
@@ -311,20 +312,20 @@ class WebScrapping():
                     self.validate_urls.add(url)
                     return True
                 else:
-                    print(f"Language : {lang}")
+                    self.console.warning(f"Language : {lang}")
                     self.not_validate_urls.add(url)
                     return False
             else:
                 if response.status_code not in [429]:
                     self.not_validate_urls.add(url)
-                print(f"Response: {response.status_code} {self.ERROR_CODES[response.status_code] if response.status_code in self.ERROR_CODES else None} | URL : {url}")
+                self.console.error(f"Response: {response.status_code} {self.ERROR_CODES[response.status_code] if response.status_code in self.ERROR_CODES else None} | URL : {url}")
                 return False
         except requests.exceptions.RequestException as e:
             # Prend en charge :
             # - ChunkedEncodingError
             # - ConnectionError, Timeout, TooManyRedirects…
             self.logs.append(f"Error: {url}", timestamp=True)
-            print(e)
+            self.console.error(e)
             return False
         
     def is_valide_url_format(self, url:str):

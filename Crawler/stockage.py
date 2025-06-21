@@ -1,3 +1,5 @@
+from display import ColorDisplay
+
 import json
 import time
 import sqlite3
@@ -77,7 +79,7 @@ class SQLStockage:
         """
         Stocke les valeurs dans une liste et tous les 100 urls, sauvegarde tout
         """
-        print(len(self.to_save))
+        ColorDisplay().validate(len(self.to_save))
         if len(self.to_save) >= self.N:
             for line in self.to_save:
                 self.save_url(*line)
@@ -234,7 +236,7 @@ class TXTStockage:
             with open(self.filename, 'a', encoding="utf-8") as file:
                 file.write(data + "\n")
         except Exception as e:
-            print(e)
+            ColorDisplay().warning(e)
 
     def reset(self):
         """

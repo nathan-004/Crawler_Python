@@ -45,7 +45,22 @@ class ColorDisplay(bcolors):
 
     def error(self, message):
         self.print("ERREUR", self.RED, self.UNDERLINE, self.BOLD, end=f"{self.YELLOW} > {self.RESET}")
-        self.print(message, self.RED, self.ITALIC)
+        self.print(message, self.RED, self.BLINK)
 
-a = ColorDisplay()
-a.error("Message d'erreur")
+    def validate(self, message):
+        self.print("REUSSI", self.GREEN, self.UNDERLINE, self.BOLD, end=" > ")
+        self.print(message, self.GREEN, self.BLINK)
+
+    def log(self, message):
+        self.print("STATUS", self.BLUE, self.UNDERLINE, self.BOLD, end=" > ")
+        self.print(message, self.BLUE, self.ITALIC)
+
+    def warning(self, message):
+        self.print(message, self.YELLOW, self.ITALIC)
+
+if __name__ == "__main__":
+    a = ColorDisplay()
+    a.error("Message d'erreur")
+    a.validate("Visiting test")
+    a.log("Current status")
+    a.warning("Attention erreur")
