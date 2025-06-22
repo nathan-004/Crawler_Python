@@ -7,6 +7,7 @@ import sqlite3
 import json
 
 current_blacklist = get_blacklist()
+BLACKLIST = get_blacklist()
 
 def get_general_frequency(word):
     """Retourne la fréquence d'apparition d'un mot dans des pages normales dans words.db"""
@@ -81,7 +82,6 @@ class Filter:
                 self.blacklist_words_count += content[word]
             
             console.validate(sorted(self.global_blacklist_content, key= lambda word : self.global_blacklist_content[word], reverse=True)[:15 if len(self.global_blacklist_content) > 15 else len(self.global_blacklist_content)])
-
 
 if __name__ == "__main__":
     f = Filter()

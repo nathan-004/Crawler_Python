@@ -2,6 +2,7 @@ from web import WebScrapping, Stack, RobotFileParser, LoadError
 from stockage import JSONStockage, TXTStockage, SQLStockage, get_domains_list
 from indexer import Indexer
 from display import ColorDisplay
+from filter_url import BLACKLIST
 
 import time
 
@@ -40,6 +41,11 @@ class Crawler():
             if not self.web.is_valid_url(url):
                 console.error(f"Invalid URL : {url}")
                 logs.append(f"Invalid URL : {url}", timestamp=True)
+                continue
+
+            if self.web.find_domain(url) in BLACKLIST:
+                console.warning(f"{url} dans la BLACKLIST")
+                logs.append(f"Url Blacklisted : {url}", timestamp=True)
                 continue
 
             if url not in visited:

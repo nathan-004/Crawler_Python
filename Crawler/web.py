@@ -402,6 +402,9 @@ class WebScrapping():
                     content[word.lower()] = 0
                 content[word.lower()] += 1
         
+        if content == {}:
+            self.console.error("Contenu vide !!!!!!!!!!!!!")
+
         return content    
         
 class RobotFileParser():
@@ -513,10 +516,9 @@ class Stack(list):
         return None
 
 if __name__ == "__main__":
-    a = WebScrapping(url="https://bloomberg.com")
+    a = WebScrapping(url="https://www.dictionary.com/")
 
-    
-
+    print(a.get_content())
     """
     print(a.urljoin("https://webscraper.io/test-sites/test2", "/test-sites3"))
     print(a.urljoin("https://webscraper.io/test-sites", "../test-sites"))
