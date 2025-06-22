@@ -7,12 +7,19 @@ import sqlite3
 def get_domains_list():
     """Retourne la liste de 1 million de domaines contenu dans top-1m.csv"""
     domains = []
-    with open("top-1m.csv", "r", encoding="utf-8") as f:
+    with open("Datas/top-1m.csv", "r", encoding="utf-8") as f:
         for line in f:
             parts = line.strip().split(",")
             if len(parts) == 2:
                 domains.append("https://" + parts[1])
     return domains
+
+def get_blacklist():
+    blacklist = []
+    with open("Datas/black_list.txt", "r", encoding="utf-8") as f:
+        for line in f:
+            blacklist.append("https://" + line[:-2])
+    return blacklist
 
 class SQLStockage:
     """Classe de stockage pour les données SQL."""
@@ -253,3 +260,4 @@ if __name__ == "__main__":
     TXTStockage("logs.txt").reset()
     JSONStockage("parameters.json").reset()
     print(get_domains_list()[:100])
+    print(get_blacklist()[:100])

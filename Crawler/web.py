@@ -83,8 +83,10 @@ class WebScrapping():
             url = self.url
 
         if url != "":
-            response = requests.get(self.url, headers=get_headers())
-        
+            try:
+                response = requests.get(self.url, headers=get_headers())
+            except requests.exceptions.RequestException as e:
+                raise LoadError(f"Request Error: {e}")
             if response.status_code != 200:
                 raise LoadError(f"Failed to load page: {response.status_code}")
         
