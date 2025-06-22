@@ -66,6 +66,7 @@ class Crawler():
                     start_web_scrap = time.time()
                 try:
                     self.web.elements = self.web.get_html_elements()
+                    self.web.console.quit()
                 except LoadError as l:
                     console.warning(l)
                     continue
@@ -156,14 +157,14 @@ if __name__ == "__main__":
     crawler = Crawler(start_url)
     try:
         crawler.crawl_bfs(debug=False)
-    except Exception as e:
+    except (Exception, KeyboardInterrupt) as e:
         ColorDisplay().error(e)
         text_stockage = TXTStockage("urls_stack.txt")
-        print("Sauvegarde de la pile dans le fichier urls_stack.txt")
+        ColorDisplay().validate("Sauvegarde de la pile dans le fichier urls_stack.txt")
         text_stockage.save(crawler.stack.stack_to_string())
-        print("Sauvegarde des données dans le fichier urls.json")
+        ColorDisplay().validate("Sauvegarde des données dans le fichier urls.json")
         crawler.json_stockage.save_stock()
-        print("Sauvegarde des données dans la base de données")
+        ColorDisplay().validate("Sauvegarde des données dans la base de données")
         for line in crawler.sql_stockage.to_save:
             crawler.sql_stockage.save_url(*line)
         logs.append("Sauvegarde des données ...", timestamp=True)

@@ -54,7 +54,7 @@ class WebScrapping():
             "pdf",
         ]
         self.logs = TXTStockage("logs.txt")
-        self.console = ColorDisplay()
+        self.console = ColorDisplay(debug=False)
 
         self.validate_urls = set()
         self.not_validate_urls = set()
@@ -64,7 +64,7 @@ class WebScrapping():
         if url != "" and url is not None:
             self.elements = self.get_html_elements()
 
-    def get_html_elements(self, url=None, html_text=None):
+    def get_html_elements(self, url=None, html_text=None, debug=False):
         """
         Définir dans que état le programme est à chaque moment : 
             outside -> Tu lis du texte normal.
@@ -312,7 +312,7 @@ class WebScrapping():
                     self.validate_urls.add(url)
                     return True
                 else:
-                    self.console.warning(f"Language : {lang}")
+                    self.console.error(f"Language : {lang}")
                     self.not_validate_urls.add(url)
                     return False
             else:

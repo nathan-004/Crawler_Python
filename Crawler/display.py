@@ -26,6 +26,10 @@ class bcolors:
 
 class ColorDisplay(bcolors):
     # https://gist.github.com/fnky/458719343aabd01cfb17a3a4f7296797
+    hidden_count = 0
+
+    def __init__(self, debug=True):
+        self.debug = debug # Affiche les warnings
 
     def print(self, message, *colors, end="\n"):
         """
@@ -56,7 +60,15 @@ class ColorDisplay(bcolors):
         self.print(message, self.BLUE, self.ITALIC)
 
     def warning(self, message):
-        self.print(message, self.YELLOW, self.ITALIC)
+        if self.debug:
+            self.print(message, self.YELLOW, self.ITALIC)
+        else:
+            self.hidden_count += 1
+    
+    def quit(self):
+        self.print(self.hidden_count, self.YELLOW, self.BOLD, self.UNDERLINE, end=" ")
+        self.print("avertissements cachés.", self.YELLOW, self.ITALIC)
+        self.hidden_count = 0
 
 if __name__ == "__main__":
     a = ColorDisplay()
