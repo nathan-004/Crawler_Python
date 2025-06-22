@@ -93,3 +93,11 @@ http://127.0.0.1:5000
 
 Exemple code : [mwmbl](https://github.com/mwmbl/mwmbl)  
 Papier : [Google](http://infolab.stanford.edu/pub/papers/google.pdf)
+
+### Données de liste noire
+
+[Cette liste]() est basée sur le projet [NoFap](https://github.com/korbirayen/NoFap/tree/main) sous licence MIT.
+
+Copyright (c) [2025] [Rayen Korbi]
+
+Utilisée selon les termes de la licence MIT.
