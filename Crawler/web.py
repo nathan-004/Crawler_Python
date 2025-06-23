@@ -4,6 +4,8 @@ from display import ColorDisplay
 import requests
 from urllib.parse import urlparse
 import re
+import gzip
+import brotli
 
 def remove_extra_whitespaces(text):
     """
@@ -47,6 +49,11 @@ class WebScrapping():
         "style"
     ])
 
+    ENCODINGS = {
+        "br" : brotli,
+        "gzip": gzip
+    }
+
     def __init__(self, url="", languages=["en", "fr", "en-US", "en-GB", "fr-FR", None]):
         self.url = url
         self.file_exceptions = [
@@ -63,8 +70,9 @@ class WebScrapping():
 
         if url != "" and url is not None:
             self.elements = self.get_html_elements()
+            self.console.quit()
 
-    def get_html_elements(self, url=None, html_text=None, debug=False):
+    def get_html_elements(self, url=None, html_text_=None, debug=False):
         """
         Définir dans que état le programme est à chaque moment : 
             outside -> Tu lis du texte normal.
@@ -89,9 +97,23 @@ class WebScrapping():
                 raise LoadError(f"Request Error: {e}")
             if response.status_code != 200:
                 raise LoadError(f"Failed to load page: {response.status_code}")
-        
-        if html_text is None:
+
+            encoding = response.headers.get("Content-Encoding")
+            if encoding == "utf-8":
+                response.encoding = "utf-8"
+                html_text = response.text
+            elif encoding in self.ENCODINGS:
+                try:
+                    html_text = self.ENCODINGS[encoding].decompress(response.content).decode("utf-8", errors="replace")
+                except:
+                    html_text = response.text
+            else:
+                raise LoadError(f"Encoding inconnu : {encoding}")
+
+        if not html_text_ is None:
             html_text = response.text
+
+        #print(html_text)
 
         state = "outside"
         elements = []
