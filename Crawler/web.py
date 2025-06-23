@@ -8,10 +8,13 @@ import gzip
 import brotli
 
 def remove_extra_whitespaces(text):
-    """
-    Removes extra whitespaces (more than one) from the input text.
-    """
+    """Removes extra whitespaces (more than one) from the input text."""
     return re.sub(r'\s{2,}', ' ', text).strip()  # Replace 2 or more spaces with a single space
+
+def starts_with_domain(url):
+    """Détecte un nom de domaine au début (ex: sd.wikipedia.org/...)"""
+    return re.match(r"^[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}(?:/|$)", url) is not None
+
 
 def get_headers():
     return {
@@ -297,6 +300,8 @@ class WebScrapping():
             url_base = url_base[:-1]
             url_base = "/".join(url_base)
             return url_base + url[2:]
+        elif url.startswith("//"):
+            return "https:" + url
         elif url.startswith("/"):
             url_base = url_base.split("//")
             domain = url_base[1].split("/")[0]
@@ -307,8 +312,11 @@ class WebScrapping():
                 url_base += "/"
             return "/".join(url_base.split("/")[:-1]) + url[2:]  # Supprime "./" et concatène avec le répertoire courant
         else:
-            sep = "/" if url_base[-1] != "/" and url[0] != "/" else ""
-            return url_base + sep + url
+            if not starts_with_domain(url):
+                sep = "/" if url_base[-1] != "/" and url[0] != "/" else ""
+                return url_base + sep + url
+            else:
+                return "https://" + url
         
     def is_valid_url(self, url:str):
         """
@@ -538,9 +546,9 @@ class Stack(list):
         return None
 
 if __name__ == "__main__":
-    a = WebScrapping(url="https://www.dictionary.com/")
+    a = WebScrapping(url="https://wikipedia.org")
 
-    print(a.get_content())
+    print(a.find_balise("a"))
     """
     print(a.urljoin("https://webscraper.io/test-sites/test2", "/test-sites3"))
     print(a.urljoin("https://webscraper.io/test-sites", "../test-sites"))
