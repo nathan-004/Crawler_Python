@@ -2,7 +2,7 @@ from web import WebScrapping, Stack, RobotFileParser, LoadError
 from stockage import JSONStockage, TXTStockage, SQLStockage, get_domains_list
 from indexer import Indexer
 from display import ColorDisplay
-from filter_url import BLACKLIST
+from filter_url import BLACKLIST, is_latin
 
 import time
 
@@ -25,7 +25,7 @@ class Crawler():
                 self.stack.push(self.url)
             else:
                 self.stack.clear()
-                self.stack.extend(get_domains_list())
+                self.stack.extend(get_domains_list()[:100])
         urls = self.sql_stockage.get_urls()
         if urls is None:
             visited = set()
@@ -72,6 +72,9 @@ class Crawler():
                     start_web_scrap = time.time()
                 try:
                     self.web.elements = self.web.get_html_elements()
+                    if not is_latin(self.web.find_balise("title")[0][2]):
+                        console.error("alphabet non latin détecté")
+                        continue
                     self.web.console.quit()
                 except LoadError as l:
                     console.warning(l)
@@ -163,7 +166,7 @@ if __name__ == "__main__":
     crawler = Crawler(start_url)
     try:
         crawler.crawl_bfs(debug=False)
-    except (Exception, KeyboardInterrupt) as e:
+    except (KeyboardInterrupt) as e:
         ColorDisplay().error(e)
         text_stockage = TXTStockage("urls_stack.txt")
         ColorDisplay().validate("Sauvegarde de la pile dans le fichier urls_stack.txt")

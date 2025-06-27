@@ -5,6 +5,7 @@ from display import ColorDisplay
 from random import shuffle
 import sqlite3
 import json
+import unicodedata # Avoir l'alphabet d'un caractère
 
 current_blacklist = get_blacklist()
 BLACKLIST = get_blacklist()
@@ -28,7 +29,7 @@ def get_general_frequency(word):
 
     return len(urls) / total_urls
 
-class Filter:
+class FilterBlacklist:
     """Regarde si un site est considéré comme pornographique à partir d'une blacklist"""
     global_blacklist_content = {}
     blacklist_words_count = 0
@@ -83,11 +84,29 @@ class Filter:
             
             console.validate(sorted(self.global_blacklist_content, key= lambda word : self.global_blacklist_content[word], reverse=True)[:15 if len(self.global_blacklist_content) > 15 else len(self.global_blacklist_content)])
 
+def is_latin(text):
+    """Return True si le texte donné appartient à l'alphabet latin (anglais, français, espagnol,...) sinon false"""
+    count_latin = 0
+    for char in text:
+        try:
+            name = unicodedata.name(char)
+        except ValueError:
+            continue
+        if "LATIN" in name:
+            count_latin += 1
+    
+    return count_latin/len(text) >= 0.5
+
+
 if __name__ == "__main__":
-    f = Filter()
+    print(is_latin("test TEST2 .........!?"))
+
+    """
+    f = FilterBlacklist()
     try:
         f.train(current_blacklist)
     except (KeyboardInterrupt) as e:
         print(f.global_blacklist_content)
         print(sorted(f.global_blacklist_content, key= lambda word : f.global_blacklist_content[word], reverse=True))
         print(f.blacklist_words_count)
+    """

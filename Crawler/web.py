@@ -389,7 +389,10 @@ class WebScrapping():
         """
         if url.startswith("http"):
             url = url.split("//")
-            return url[0] + "//" + url[1].split("/")[0]
+            try:
+                return url[0] + "//" + url[1].split("/")[0]
+            except IndexError:
+                self.console.error(f"list index out of range : {"//".join(url)}")
         else:
             return url.split("/")[0]
         
