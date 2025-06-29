@@ -31,14 +31,6 @@ class Node:
 
         self.liens_entrant = []
 
-    def init_lien_entrants(self, graph):
-        """Initie la liste de liens entrants à partir du graphe"""
-
-        for url in graph:
-            node = graph[url]
-            if self.name in node.links:
-                self.liens_entrant.append(url)
-
     def distribute(self, graph, d):
         """
         Distribue la valeur de PageRank vers les liens de cette page
@@ -54,21 +46,25 @@ def page_rank(graph, i, d=0.85):
     for _ in range(i):
         for url in graph:
             graph[url].page_rank_value(graph, d)
-            print(graph[url].value)
     
-    print(sorted(graph, key=lambda url : graph[url].value, reverse=False)[:200])
+    return sorted(graph, key=lambda url : graph[url].value, reverse=False)[:200]
 
 if __name__ == "__main__":
     console.log(f"Création du graphe | {len(URLS)} urls")
     graph = {url: Node(url, N) for url in URLS}
     console.log("Création des liens entrants...")
-    for url in graph:
-        graph[url].init_lien_entrants(graph)
+    for url, node in graph.items():
+        for link in node.links:
+            if link in graph:
+                graph[link].liens_entrant.append(url)
     console.quit()
     console.validate("Graphe terminé")
 
     console.log("PageRank...")
-    page_rank(graph, 50)
+    sorted_urls = page_rank(graph, 50)
     console.validate("Classement des pages terminés...")
+
+    for url in sorted_urls:
+        print(url, "liens sortants:", len(graph[url].links), "liens entrants:", len(graph[url].liens_entrant))
 
 # https://web.stanford.edu/class/cs54n/handouts/24-GooglePageRankAlgorithm.pdf
