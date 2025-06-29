@@ -5,7 +5,7 @@
 ![Last Commit](https://img.shields.io/github/last-commit/nathan-004/search-engine)
 ![GitHub issues](https://img.shields.io/github/issues/nathan-004/search-engine)
 ![Status](https://img.shields.io/badge/status-en%20cours-orange)
-![Python version](https://img.shields.io/badge/python-3.10-blue)
+![Python version](https://img.shields.io/badge/python-3.12-blue)
 
 Ce projet est un **moteur de recherche web** codé en Python. Il permet de crawler les pages web, d'indexer leur contenu dans des bases SQLite, et de rechercher des informations via une interface web en Flask.
 
